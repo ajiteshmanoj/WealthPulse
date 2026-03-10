@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getPortfolio, getWellness } from '../services/api'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
@@ -7,7 +8,7 @@ import PortfolioSummary from '../components/Portfolio/PortfolioSummary'
 import HoldingsTable from '../components/Portfolio/HoldingsTable'
 import WealthChart from '../components/Portfolio/WealthChart'
 import Recommendations from '../components/AI/Recommendations'
-import { TrendingUp, TrendingDown, DollarSign, Activity, BarChart3, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { TrendingUp, TrendingDown, DollarSign, Activity, BarChart3, HelpCircle, ChevronDown, ChevronUp, Info, X } from 'lucide-react'
 import { useState } from 'react'
 
 function formatWealth(val) {
@@ -19,6 +20,7 @@ function formatWealth(val) {
 export default function Dashboard({ userId }) {
   const [holdingsView, setHoldingsView] = useState('all')
   const [showWhyPanel, setShowWhyPanel] = useState(false)
+  const [showScoreInfo, setShowScoreInfo] = useState(false)
 
   const { data: portfolio, isLoading: pLoading } = useQuery({
     queryKey: ['portfolio', userId],
@@ -141,8 +143,11 @@ export default function Dashboard({ userId }) {
         </div>
 
         {/* Wellness Score */}
-        <div className="card glow-green">
-          <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Wealth Wellness Score</h3>
+        <div className="card glow-green" style={{ cursor: 'pointer', position: 'relative' }} onClick={() => setShowScoreInfo(true)}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 600 }}>Wealth Wellness Score</h3>
+            <Info size={16} color="var(--text-muted)" />
+          </div>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
             <ScoreRing score={wellness?.overall_score || 0} color={wellness?.color} />
           </div>
@@ -170,7 +175,11 @@ export default function Dashboard({ userId }) {
               </ResponsiveContainer>
             </div>
           )}
+          <div style={{ textAlign: 'center', marginTop: 10, fontSize: 11, color: 'var(--text-muted)' }}>
+            Click to see how this score is computed
+          </div>
         </div>
+
       </div>
 
       {/* Score breakdown + Portfolio allocation */}
@@ -211,6 +220,135 @@ export default function Dashboard({ userId }) {
         </div>
         <HoldingsTable holdings={portfolio?.holdings} activeClass={holdingsView} />
       </div>
+
+      {/* Score Methodology Modal */}
+      {showScoreInfo && createPortal(
+        <div
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 24,
+          }}
+          onClick={() => setShowScoreInfo(false)}
+        >
+          <div
+            style={{
+              background: 'var(--bg-card)', borderRadius: 16,
+              border: '1px solid var(--border)', maxWidth: 560, width: '100%',
+              maxHeight: '80vh', overflowY: 'auto', padding: 28,
+              boxShadow: '0 24px 48px rgba(0,0,0,0.4)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700 }}>How Your Score is Computed</h3>
+              <button
+                onClick={() => setShowScoreInfo(false)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 4 }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div style={{
+              padding: 16, borderRadius: 12, background: 'var(--bg-secondary)',
+              border: '1px solid var(--border)', marginBottom: 20,
+            }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
+                Formula
+              </div>
+              <div style={{ fontSize: 13, color: 'var(--text-primary)', fontFamily: 'monospace', lineHeight: 1.8 }}>
+                Overall Score =<br />
+                &nbsp;&nbsp;Diversification × <strong>0.25</strong><br />
+                &nbsp;&nbsp;+ Liquidity × <strong>0.20</strong><br />
+                &nbsp;&nbsp;+ Behavioral Resilience × <strong>0.20</strong><br />
+                &nbsp;&nbsp;+ Goal Alignment × <strong>0.20</strong><br />
+                &nbsp;&nbsp;+ Digital Readiness × <strong>0.15</strong>
+              </div>
+            </div>
+
+            {/* Sub-score details */}
+            {[
+              {
+                name: 'Diversification', weight: '25%', color: '#3b82f6', key: 'diversification',
+                how: 'Measures concentration risk. Penalizes if any single holding exceeds 30% of total wealth, or if any one asset class exceeds 60%.',
+              },
+              {
+                name: 'Liquidity', weight: '20%', color: '#10b981', key: 'liquidity',
+                how: 'Assesses cash reserves relative to total wealth. Targets ≥20% cash buffer. Penalizes heavy allocation to illiquid private assets.',
+              },
+              {
+                name: 'Behavioral Resilience', weight: '20%', color: '#f59e0b', key: 'behavioral_resilience',
+                how: 'Evaluates how well your portfolio can weather volatility. Factors in overall portfolio volatility (60% weight) and crypto concentration risk (40% weight).',
+              },
+              {
+                name: 'Goal Alignment', weight: '20%', color: '#8b5cf6', key: 'goal_alignment',
+                how: 'Checks if your savings rate and expected returns are on track to meet your financial goals. Penalizes return gaps and rewards on-track future value projections.',
+              },
+              {
+                name: 'Digital Readiness', weight: '15%', color: '#ec4899', key: 'digital_readiness',
+                how: 'Evaluates exposure to crypto and tokenised assets. Optimal range is 5–20% of portfolio. Too little or too much both reduce the score.',
+              },
+            ].map(dim => {
+              const sub = wellness?.sub_scores?.[dim.key]
+              return (
+                <div key={dim.key} style={{
+                  padding: 14, borderRadius: 12, background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)', marginBottom: 10,
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ width: 10, height: 10, borderRadius: '50%', background: dim.color }} />
+                      <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>{dim.name}</span>
+                      <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>({dim.weight})</span>
+                    </div>
+                    <span style={{ fontSize: 18, fontWeight: 800, color: dim.color }}>{sub?.score ?? '—'}</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 6 }}>
+                    {dim.how}
+                  </div>
+                  {sub?.insight && (
+                    <div style={{ fontSize: 12, color: dim.color, fontWeight: 600, fontStyle: 'italic' }}>
+                      {sub.insight}
+                    </div>
+                  )}
+                  <div style={{ marginTop: 8, height: 4, borderRadius: 2, background: 'var(--border)' }}>
+                    <div style={{
+                      height: '100%', borderRadius: 2, background: dim.color,
+                      width: `${sub?.score ?? 0}%`, transition: 'width 0.5s ease',
+                    }} />
+                  </div>
+                </div>
+              )
+            })}
+
+            {/* Score ranges */}
+            <div style={{
+              padding: 14, borderRadius: 12, background: 'var(--bg-secondary)',
+              border: '1px solid var(--border)', marginTop: 16,
+            }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
+                Score Ranges
+              </div>
+              {[
+                { range: '80–100', label: 'Excellent', color: '#10b981' },
+                { range: '65–79', label: 'Good', color: '#3b82f6' },
+                { range: '50–64', label: 'Fair', color: '#f59e0b' },
+                { range: '35–49', label: 'At Risk', color: '#f97316' },
+                { range: '0–34', label: 'Critical', color: '#ef4444' },
+              ].map(r => (
+                <div key={r.range} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: r.color }} />
+                  <span style={{ fontSize: 12, color: 'var(--text-secondary)', minWidth: 50 }}>{r.range}</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: r.color }}>{r.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   )
 }
