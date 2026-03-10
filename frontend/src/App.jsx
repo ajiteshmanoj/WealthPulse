@@ -92,6 +92,13 @@ function App() {
           <Route path="/news" element={<NewsPage />} />
           <Route path="/clients" element={<ClientsPage />} />
         </Routes>
+        <div style={{
+          padding: '12px 24px', marginTop: 'auto',
+          fontSize: 11, color: 'var(--text-muted)', opacity: 0.6,
+          lineHeight: 1.5, textAlign: 'center', borderTop: '1px solid var(--border)',
+        }}>
+          WealthPulse is for informational purposes only and does not constitute regulated financial advice under the MAS Financial Advisers Act. | Built for NFC FinTech Innovator's Hackathon 2026
+        </div>
       </main>
     </div>
   )

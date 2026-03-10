@@ -7,7 +7,7 @@ import PortfolioSummary from '../components/Portfolio/PortfolioSummary'
 import HoldingsTable from '../components/Portfolio/HoldingsTable'
 import WealthChart from '../components/Portfolio/WealthChart'
 import Recommendations from '../components/AI/Recommendations'
-import { TrendingUp, TrendingDown, DollarSign, Activity, BarChart3 } from 'lucide-react'
+import { TrendingUp, TrendingDown, DollarSign, Activity, BarChart3, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
 
 function formatWealth(val) {
@@ -18,6 +18,7 @@ function formatWealth(val) {
 
 export default function Dashboard({ userId }) {
   const [holdingsView, setHoldingsView] = useState('all')
+  const [showWhyPanel, setShowWhyPanel] = useState(false)
 
   const { data: portfolio, isLoading: pLoading } = useQuery({
     queryKey: ['portfolio', userId],
@@ -48,6 +49,46 @@ export default function Dashboard({ userId }) {
       <div className="page-header">
         <h2>Welcome back, {portfolio?.name?.split(' ')[0]}</h2>
         <p>Here's your wealth wellness overview for today</p>
+      </div>
+
+      {/* Why WealthPulse — collapsible info panel */}
+      <div className="card" style={{ marginBottom: 24, padding: showWhyPanel ? '16px 20px' : '10px 20px' }}>
+        <button
+          onClick={() => setShowWhyPanel(!showWhyPanel)}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none',
+            color: 'var(--text-secondary)', cursor: 'pointer', width: '100%', padding: 0,
+            fontFamily: 'inherit', fontSize: 13, fontWeight: 600,
+          }}
+        >
+          <HelpCircle size={16} color="var(--accent-blue)" />
+          What makes WealthPulse different?
+          {showWhyPanel ? <ChevronUp size={14} style={{ marginLeft: 'auto' }} /> : <ChevronDown size={14} style={{ marginLeft: 'auto' }} />}
+        </button>
+        {showWhyPanel && (
+          <div style={{ marginTop: 14, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+            <p style={{ marginBottom: 12 }}>
+              Traditional platforms track returns. <strong style={{ color: 'var(--text-primary)' }}>WealthPulse measures wealth health</strong> — a holistic view across five dimensions:
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10, marginBottom: 14 }}>
+              {[
+                { name: 'Diversification', desc: 'Are you spread across asset classes, or concentrated in one bet?', color: '#3b82f6' },
+                { name: 'Liquidity', desc: 'Can you access cash when you need it, without selling at a loss?', color: '#10b981' },
+                { name: 'Behavioral Resilience', desc: 'Can your portfolio weather volatility without panic selling?', color: '#f59e0b' },
+                { name: 'Goal Alignment', desc: 'Are your savings and returns on track to meet your life goals?', color: '#8b5cf6' },
+                { name: 'Digital Readiness', desc: 'Do you have appropriate exposure to crypto and tokenised assets?', color: '#ec4899' },
+              ].map(d => (
+                <div key={d.name} style={{ padding: '10px 14px', borderRadius: 8, background: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: d.color, marginBottom: 4 }}>{d.name}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.5 }}>{d.desc}</div>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
+              Unlike Endowus, StashAway, or Syfe — WealthPulse is the only platform that unifies traditional, private, and tokenised assets under a single multi-dimensional wellness score, with AI-powered insights and historical crisis stress testing.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Stat cards */}

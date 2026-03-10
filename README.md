@@ -19,6 +19,8 @@ Built for Singapore-based investors and wealth managers, the platform combines r
 - [API Reference](#api-reference)
 - [Architecture](#architecture)
 - [Design Decisions](#design-decisions)
+- [Business Model & Market Opportunity](#business-model--market-opportunity)
+- [Regulatory Considerations](#regulatory-considerations)
 
 ---
 
@@ -542,6 +544,69 @@ WealthPulse/
 - **Historical crisis data** — Real peak-to-trough drawdowns from actual market events, not simulated, giving users an authentic stress-test experience
 - **Live news with AI enrichment** — RSS feeds provide real headlines; Claude adds the intelligence layer (sentiment, relevance, asset class tagging)
 - **User-specific scenarios** — Stress tests apply to the currently selected investor's actual portfolio, not a generic benchmark
+
+---
+
+## Business Model & Market Opportunity
+
+### Target Segments
+
+| Segment | Description | Go-to-Market |
+|---------|-------------|--------------|
+| **B2B** | Wealth management firms, private banks, family offices | Direct sales to compliance & advisory teams needing holistic client health monitoring |
+| **B2B2C** | Adviser platforms (e.g., iFAST, Endowus for Advisers) | White-label integration — advisers use WealthPulse to engage clients with wellness-driven conversations |
+| **B2C** | Mass affluent investors (SGD 100K–5M investable) | Freemium consumer app — basic wellness score free, premium features (AI chat, scenario lab, goal projections) via subscription |
+
+### Revenue Model
+
+- **SaaS Licensing (B2B):** ~SGD 200/month per adviser seat. Includes full dashboard, client book, scenario lab, AI recommendations, and white-label branding.
+- **API Licensing (Institutions):** Flat + usage-based pricing for banks/platforms embedding the Wellness Score engine, stress-testing API, or AI recommendation service into their own apps.
+- **Freemium Consumer Tier (B2C):** Free basic wellness score and portfolio overview. Premium tier (~SGD 15/month) unlocks AI chat, goal projections, scenario lab, and live market pulse.
+
+### Market Sizing (Singapore)
+
+- **TAM:** ~SGD 4 trillion in assets under management across Singapore's wealth management industry (MAS data)
+- **SAM:** 3,000+ MAS-licensed financial advisers and ~200 licensed financial advisory firms — primary B2B target
+- **SOM:** Capture 5% of adviser market in Year 1 = ~150 seats × SGD 200/month = SGD 360K ARR, scaling with platform integrations
+
+### Competitive Differentiation
+
+| Feature | WealthPulse | Endowus | StashAway | Syfe |
+|---------|-------------|---------|-----------|------|
+| Multi-dimensional Wellness Score | Yes (5 sub-scores) | No | No | No |
+| Traditional + Crypto + Tokenised assets | Yes (6 classes) | Traditional only | Traditional only | Traditional + crypto |
+| Behavioral Resilience scoring | Yes | No | No | No |
+| Digital Readiness scoring | Yes | No | No | No |
+| Historical crisis stress testing | Yes (6 real crises) | No | No | No |
+| AI-powered recommendations (Claude) | Yes | No | Basic | No |
+| Adviser multi-client dashboard | Yes | No | No | No |
+| Live news with AI sentiment | Yes | No | No | No |
+
+**WealthPulse is the only platform that unifies traditional, private, and tokenised assets under a single multi-dimensional Wellness Score that includes behavioral resilience and digital readiness — dimensions no existing robo-adviser measures.**
+
+---
+
+## Regulatory Considerations
+
+### Not Regulated Financial Advice
+
+WealthPulse provides **financial information and analytics only** — it does NOT constitute regulated financial advice under the MAS Financial Advisers Act (FAA). All AI-generated recommendations are clearly flagged as informational and educational. The platform does not execute trades, manage assets, or make investment decisions on behalf of users.
+
+### Data Privacy (PDPA Compliance)
+
+- Data aggregation is designed to comply with the **Singapore Personal Data Protection Act (PDPA)**
+- No raw bank credentials are stored — the platform is designed for integration with **MAS-endorsed open finance APIs** (SGFinDex framework)
+- All portfolio data in the current prototype is mock/demo data; production deployment would use encrypted data stores with consent-based access
+
+### Digital Asset Framework
+
+- Tokenised asset tracking aligns with the **MAS Project Guardian** framework for digital asset interoperability
+- Crypto asset classification follows MAS guidelines on Digital Payment Token (DPT) services
+- The platform tracks but does not custody digital assets
+
+### Disclaimer
+
+> **WealthPulse does not provide regulated financial advice. All scores, projections, and recommendations are for informational and educational purposes only. Consult a licensed financial adviser before making investment decisions.**
 
 ---
 
