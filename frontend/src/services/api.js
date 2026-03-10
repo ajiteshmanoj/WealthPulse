@@ -14,3 +14,4 @@ export const getClients = () => api.get('/clients').then(r => r.data);
 export const getGoal = (userId) => api.get(`/goals/${userId}`).then(r => r.data);
 export const calculateGoal = (data) => api.post('/goals/calculate', data).then(r => r.data);
 export const analyzeExpenses = (data) => api.post('/goals/expenses', data).then(r => r.data);
+export const getHistoricalCrises = () => api.get('/historical-crises').then(r => r.data);

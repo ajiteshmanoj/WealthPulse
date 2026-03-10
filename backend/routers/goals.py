@@ -150,7 +150,7 @@ async def calculate_goal(req: GoalCalcRequest):
 
         # Scenarios
         scenarios = {}
-        for label, ret_pct in [("conservative", 4), ("moderate", 7), ("aggressive", 11)]:
+        for label, ret_pct in [("conservative", 4), ("moderate", 10), ("aggressive", 20)]:
             r = ret_pct / 100 / 12
             fv = future_value(req.current_savings_toward_goal, req.monthly_contribution, r, months)
             scenarios[label] = {

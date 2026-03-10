@@ -4,7 +4,7 @@
 
 WealthPulse is a next-generation wealth wellness platform that redefines how investors and wealth advisers understand financial health. Instead of just tracking portfolio returns, WealthPulse introduces a proprietary **Wealth Wellness Score** — a holistic, multi-dimensional health metric that evaluates diversification, liquidity, behavioral resilience, goal alignment, and digital readiness across traditional and emerging asset classes including crypto and tokenised real-world assets.
 
-Built for Singapore-based investors and wealth managers, the platform combines real-time portfolio analytics with **AI-powered recommendations from Claude (Anthropic)**, Monte Carlo simulations, macro stress testing, and an intelligent adviser dashboard.
+Built for Singapore-based investors and wealth managers, the platform combines real-time portfolio analytics with **AI-powered recommendations from Claude (Anthropic)**, interactive goal projections, historical crisis simulations, live financial news with AI sentiment analysis, and an intelligent adviser dashboard.
 
 ---
 
@@ -18,6 +18,7 @@ Built for Singapore-based investors and wealth managers, the platform combines r
 - [Wellness Score Methodology](#wellness-score-methodology)
 - [API Reference](#api-reference)
 - [Architecture](#architecture)
+- [Design Decisions](#design-decisions)
 
 ---
 
@@ -34,9 +35,9 @@ The app has two perspectives accessible from the sidebar:
 ### Investor Flow
 1. Select an investor profile from the bottom of the sidebar (Alex Tan / Sarah Lim / David Chen)
 2. **Dashboard** — See total wealth, wellness score ring, performance stats, wealth history chart, score breakdown, asset allocation pie chart, AI recommendations, and full holdings table
-3. **Goal Planner** — View goal progress, run Monte Carlo projections, analyze expenses
-4. **Scenario Lab** — Stress-test the portfolio against 4 macro events with adjustable magnitude
-5. **Market Pulse** — Browse 10 macro news items with sentiment tags and affected asset classes
+3. **Goal Planner** — View goal progress, adjust timeline with interactive slider, visualize projected growth and portfolio strategy outcomes in real time
+4. **Scenario Lab** — Stress-test the portfolio against custom macro events or 6 real historical financial crises (2008 GFC, COVID-19, Dot-Com, etc.)
+5. **Market Pulse** — Browse live financial news from Yahoo Finance, CNBC, MarketWatch, Reuters, and more, with AI-powered sentiment analysis
 
 ---
 
@@ -106,28 +107,36 @@ The main dashboard provides a complete wealth overview at a glance.
 Three tabs: **Overview**, **Projection**, **Expenses**
 
 **Overview Tab:**
+- Editable goal fields — target amount, monthly contribution, time horizon, expected return
 - Goal card with name, type, and on-track/off-track status badge
 - Visual progress bar showing current savings vs target amount with percentage
 - Key metrics: monthly contribution, time horizon, expected return, projected final value
 
-**Projection Tab (Monte Carlo):**
-- Runs 1,000 Monte Carlo simulations with normally distributed returns (std dev = 8%)
-- **Key Metrics Row:**
-  - Monthly required contribution to meet goal
-  - Probability of success (% of simulations reaching target)
-  - Shortfall or surplus in SGD
-  - Required return rate to meet goal with current contributions
-- **Monte Carlo Results:**
-  - P10 (pessimistic), P50 (median), P90 (optimistic) final wealth values
-  - Color-coded cards (red/blue/green)
-- **Wealth Projection Chart:**
-  - Dual area chart: projected wealth (blue) and total contributions (green)
-  - Yellow dashed reference line at target amount
+**Projection Tab:**
+- **Interactive Timeline Slider (1-30 years):**
+  - All calculations update in real time as the slider moves
+  - No page reload or API calls needed — everything computes client-side instantly
+
+- **"What It Takes to Reach Your Goal" Panel:**
+  - **Recommended Monthly Contribution** — The amount needed per month to reach your goal in the selected timeframe, with comparison to your current contribution
+  - **Required Annual Return** — The return rate needed if you keep your current savings, with risk-level guidance (conservative/moderate/aggressive/very high risk)
+
+- **Growth Over Time Chart:**
+  - Dual area chart that updates dynamically with the slider
+  - Blue area = projected growth with returns (compound interest)
+  - Green area = total contributions only (what you put in)
+  - Yellow dashed line = target amount
   - Interactive tooltips with SGD values per year
-- **Return Scenarios Comparison:**
-  - Three cards: Conservative (4%), Moderate (7%), Aggressive (11%)
-  - Each shows final value and "Meets Goal" / "Falls Short" badge
+
+- **Portfolio Strategy Comparison ("What If Your Returns Were Different?"):**
+  - Three cards computed dynamically from the slider's year value:
+    - **Safe & Steady (Bonds)** — 4% p.a.
+    - **Balanced Growth (S&P 500)** — 10% p.a.
+    - **High Growth (Tech/Crypto)** — 20% p.a.
+  - Each shows projected final value and "Reaches Goal" / "Falls Short" status
   - Green/red background tinting based on outcome
+  - As the user increases years, compound growth makes more strategies viable
+
 - **Milestones:**
   - Automatically calculated 25%, 50%, 75%, 100% progress markers
   - Shows year reached and SGD value at each milestone
@@ -149,51 +158,79 @@ Three tabs: **Overview**, **Projection**, **Expenses**
 
 ### 3. Scenario Lab
 
-Stress-test your portfolio against macro market events.
+Stress-test your portfolio against macro market events — both custom and historical.
 
-**Scenario Selection (4 cards):**
-- **Interest Rate Hike** — Default +1% | Impact: equities -4%, bonds -6%, crypto -8%
-- **Market Crash** — Default -20% | Impact: equities -20%, crypto -35%, bonds +3%
-- **Crypto Rally** — Default +50% | Impact: crypto +50%, tokenised +20%, equities +2%
-- **SGD Depreciation** — Default -5% | Impact: cash -5%, crypto +5%, equities +3%
+**Two modes via tab switcher:**
 
-**Custom Magnitude Slider:**
-- Adjustable numeric input to modify scenario intensity
-- Re-run button to recalculate with custom parameters
+#### Custom Scenarios
+4 adjustable macro events with custom magnitude input:
+- **Interest Rate Hike** (amber) — Default +1% | Impact: equities -4%, bonds -6%, crypto -8%
+- **Market Crash** (red) — Default -20% | Impact: equities -20%, crypto -35%, bonds +3%
+- **Crypto Rally** (purple) — Default +50% | Impact: crypto +50%, tokenised +20%, equities +2%
+- **SGD Depreciation** (orange) — Default -5% | Impact: cash -5%, crypto +5%, equities +3%
 
-**Impact Results:**
+Each scenario is color-coded with distinct icons. Users can adjust the magnitude and re-run.
+
+#### Historical Crises
+6 real-world financial crises with actual market impact data:
+
+| Crisis | Period | S&P 500 | Key Impact | Recovery |
+|--------|--------|---------|------------|----------|
+| **2008 Global Financial Crisis** | Sep 2008 – Mar 2009 | -57% | Lehman collapse, global credit freeze, STI -64% | ~4 years |
+| **COVID-19 Crash** | Feb – Mar 2020 | -34% | Fastest bear market ever (23 trading days), Bitcoin -40% | ~6 months |
+| **Dot-Com Bubble Burst** | Mar 2000 – Oct 2002 | -49% | NASDAQ -78%, $5T wiped out, 15yr NASDAQ recovery | ~7 years |
+| **European Debt Crisis** | Jul – Nov 2011 | -19% | Greek/Portugal sovereign debt, ECB emergency measures | ~1 year |
+| **China Stock Market Crash** | Jun – Aug 2015 | -12% | Shanghai -43%, yuan devaluation, global contagion | ~1 year |
+| **2022 Inflation & Rate Shock** | Jan – Oct 2022 | -25% | Fed fastest hikes since 1980s, bonds -13%, BTC -65% | ~1.5 years |
+
+Each crisis card shows:
+- Name, period, and full description of what happened
+- Duration in months and recovery timeline
+- Click to simulate: applies the actual asset-class-level drawdowns to the user's current portfolio
+
+**Impact Results (both modes):**
 - **Summary Row:** Portfolio before vs after, total SGD impact, percentage change, wellness score impact
-- **Asset Impact Chart:** Horizontal bar chart showing per-asset-class gain/loss percentages
-  - Green bars for gains, red bars for losses
-  - Tooltips with exact SGD value changes
-- **AI Narrative:** Plain-English paragraph explaining the scenario's impact on the specific portfolio composition
+- **Asset Impact Bars:** Custom horizontal bars per asset class with distinct colors
+  - Equities (blue), Bonds (green), Cash (amber), Crypto (purple), Private Assets (pink), Tokenised Assets (cyan)
+  - Red bars for losses, green bars for gains, "No Impact" label for 0% changes
+  - Each bar shows percentage and SGD value
+- **Analysis Narrative:** Contextual paragraph explaining the scenario's impact
+  - For historical crises: includes original crisis description, SGD loss amount, duration, and recovery timeline
+
+**User-specific:** All scenarios use the currently selected investor profile's actual portfolio data and holdings.
 
 ---
 
 ### 4. Market Pulse
 
-Curated macro news feed with AI-enriched metadata.
+**Live financial news** aggregated from major sources with AI-powered sentiment analysis.
 
-**10 News Items covering:**
-- Federal Reserve rate decisions
-- Singapore MAS monetary policy
-- Bitcoin/crypto market movements
-- EU tokenisation regulation
-- US inflation data
-- South China Sea geopolitical risk
-- SGD FX movements
-- Schroders product launches (tokenised PE fund)
-- Singapore REIT market
-- Hong Kong crypto regulation
+**Real-Time RSS Feed Sources:**
+- Yahoo Finance
+- CNBC
+- Reuters
+- MarketWatch
+- Bloomberg
+- Financial Times
+- The Straits Times
+- Nasdaq
+
+**How it works:**
+1. Backend fetches RSS feeds from all sources concurrently
+2. Articles are deduplicated by headline and sorted by publish date (newest first)
+3. Top 15 headlines are sent to **Claude AI** for analysis
+4. Claude returns: sentiment (positive/negative/neutral), relevance (high/medium/low for Singapore wealth management), and affected asset classes
+5. Results are cached for 5 minutes to avoid excessive API calls
 
 **Per News Item:**
-- Headline, source, time ago
-- **Sentiment badge** — Positive (green arrow), Negative (red arrow), Neutral (grey)
-- **Relevance badge** — High (red), Medium (yellow), Low (blue)
-- **Affected asset classes** — Blue tags showing which portfolio segments are impacted
-- Summary paragraph
+- **Headline** — Clickable link to the original article (opens in new tab with external link icon)
+- **Source and time ago** — e.g., "CNBC · 2 hours ago"
+- **Sentiment indicator** — Positive (green up arrow), Negative (red down arrow), Neutral (grey dash)
+- **Relevance badge** — High (red), Medium (yellow), Low (blue) — rated for Singapore-based wealth management relevance
+- **Affected asset classes** — Blue tags (e.g., "equities", "bonds", "crypto") determined by Claude's analysis of each headline
+- **Summary** — Article description/summary
 
-**Live News:** When `NEWS_API_KEY` is set, fetches real business headlines from NewsAPI.org. Otherwise uses rich mock data.
+**Graceful fallback:** If all RSS feeds fail or no API key is set, rich mock data with 5 pre-written financial news items is displayed.
 
 ---
 
@@ -240,12 +277,13 @@ Each client card displays in a single row:
 | Backend    | Python 3.9+, FastAPI, Pydantic              | REST API, data validation            |
 | Frontend   | React 18, Vite                              | SPA with hot module reload           |
 | Charts     | Recharts                                    | Area, pie, bar, line visualizations  |
-| AI         | Anthropic Claude API (claude-sonnet-4-20250514) | Live personalized recommendations    |
+| AI         | Anthropic Claude API (claude-sonnet-4-20250514) | Live recommendations + news sentiment analysis |
 | State      | TanStack React Query                        | Server state, caching, auto-refetch  |
 | HTTP       | Axios                                       | API communication                    |
 | Routing    | React Router v6                             | Client-side navigation               |
 | Icons      | Lucide React                                | Consistent icon system               |
-| News       | NewsAPI.org (optional)                      | Live business headlines              |
+| RSS        | feedparser                                  | Real-time financial news aggregation |
+| News Sources | Yahoo Finance, CNBC, Reuters, MarketWatch, Bloomberg, FT, Straits Times, Nasdaq | Live financial RSS feeds |
 
 ---
 
@@ -263,9 +301,9 @@ python -m venv venv
 source venv/bin/activate    # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
-# Optional: add API keys for live AI + news
+# Optional: add API keys for live AI + news sentiment
 cp .env.example .env
-# Edit .env with your keys
+# Edit .env with your Anthropic API key
 
 # Start the server
 uvicorn main:app --reload --port 8000
@@ -287,10 +325,9 @@ Open `http://localhost:5173` in your browser. Both servers must be running simul
 
 | Variable            | Required | Purpose                                  |
 |---------------------|----------|------------------------------------------|
-| `ANTHROPIC_API_KEY` | No       | Enables live Claude AI recommendations   |
-| `NEWS_API_KEY`      | No       | Enables live news from NewsAPI.org       |
+| `ANTHROPIC_API_KEY` | No       | Enables live Claude AI recommendations and news sentiment analysis |
 
-The app is fully functional without any API keys — all features work with rich mock data.
+The app is fully functional without any API keys — all features work with rich mock/fallback data.
 
 ---
 
@@ -402,13 +439,14 @@ Base URL: `http://localhost:8000`
 
 | Method | Endpoint    | Description                           |
 |--------|-------------|---------------------------------------|
-| GET    | `/api/news` | Returns 10 news items with sentiment, relevance, affected asset classes. Uses NewsAPI if key present, else mock data |
+| GET    | `/api/news` | Fetches live RSS feeds from Yahoo Finance, CNBC, Reuters, MarketWatch, Bloomberg, FT, Straits Times, Nasdaq. Claude AI analyzes sentiment, relevance, and affected asset classes. 5-minute cache. Falls back to mock data if feeds fail. |
 
 ### Scenarios
 
-| Method | Endpoint        | Description                           |
-|--------|-----------------|---------------------------------------|
-| POST   | `/api/scenario` | Stress-tests portfolio against a macro event. Body: `{ scenario_type, magnitude }`. Types: `rate_hike`, `market_crash`, `crypto_rally`, `sgd_depreciation` |
+| Method | Endpoint                | Description                           |
+|--------|-------------------------|---------------------------------------|
+| POST   | `/api/scenario`         | Stress-tests portfolio against a macro event or historical crisis. Body: `{ scenario_type, magnitude?, user_id? }`. Custom types: `rate_hike`, `market_crash`, `crypto_rally`, `sgd_depreciation`. Historical: `gfc_2008`, `covid_2020`, `dotcom_2000`, `euro_debt_2011`, `china_2015`, `covid_inflation_2022` |
+| GET    | `/api/historical-crises` | Returns list of available historical crisis scenarios with name, period, description, duration, and recovery time |
 
 ### AI Recommendations
 
@@ -427,7 +465,7 @@ Base URL: `http://localhost:8000`
 | Method | Endpoint               | Description                           |
 |--------|------------------------|---------------------------------------|
 | GET    | `/api/goals/{id}`      | Returns saved goal with current progress and projected final value |
-| POST   | `/api/goals/calculate` | Runs full goal projection: monthly required, Monte Carlo (1000 sims), P10/P50/P90, milestones, 3 return scenarios |
+| POST   | `/api/goals/calculate` | Runs full goal projection: monthly required, scenarios, milestones, wealth projection |
 | POST   | `/api/goals/expenses`  | Analyzes income vs expenses: surplus, investable amount, savings gap, smart suggestions |
 
 ### Utility
@@ -448,15 +486,15 @@ WealthPulse/
 │   ├── routers/
 │   │   ├── portfolio.py         # GET /api/portfolio/{id} — unified portfolio data
 │   │   ├── wellness.py          # GET /api/wellness/{id} — scoring engine (5 sub-scores)
-│   │   ├── news.py              # GET /api/news — NewsAPI integration + mock fallback
-│   │   ├── scenarios.py         # POST /api/scenario — 4 stress test types
+│   │   ├── news.py              # GET /api/news — live RSS feeds + Claude sentiment analysis
+│   │   ├── scenarios.py         # POST /api/scenario — 4 custom + 6 historical crises
 │   │   ├── ai.py                # POST /api/ai/recommend — Claude API + fallback
-│   │   └── goals.py             # Goal calculator, Monte Carlo, expense analyzer
+│   │   └── goals.py             # Goal calculator, projections, expense analyzer
 │   ├── mock_data/
 │   │   ├── portfolios.json      # 3 investor profiles (Alex, Sarah, David)
 │   │   ├── clients.json         # 8 adviser clients (Marcus → Aisha)
 │   │   └── goals.json           # Goal configs with income + expenses
-│   ├── requirements.txt         # fastapi, uvicorn, anthropic, httpx, pydantic, dotenv
+│   ├── requirements.txt         # fastapi, uvicorn, anthropic, httpx, pydantic, feedparser
 │   └── .env.example             # Template for API keys
 │
 ├── frontend/
@@ -466,12 +504,12 @@ WealthPulse/
 │   │   ├── App.css              # Layout, sidebar, stat cards, tabs, animations
 │   │   ├── index.css            # Design system — colors, cards, badges, buttons, grid
 │   │   ├── services/
-│   │   │   └── api.js           # Axios client — all 9 API functions
+│   │   │   └── api.js           # Axios client — all API functions
 │   │   ├── pages/
 │   │   │   ├── Dashboard.jsx    # Main investor dashboard (stats + charts + AI + table)
-│   │   │   ├── GoalsPage.jsx    # 3-tab goal planner (overview + projection + expenses)
-│   │   │   ├── ScenariosPage.jsx # Scenario selector + impact visualization
-│   │   │   ├── NewsPage.jsx     # News feed with sentiment + relevance badges
+│   │   │   ├── GoalsPage.jsx    # 3-tab goal planner with interactive slider projections
+│   │   │   ├── ScenariosPage.jsx # Custom + historical crisis stress testing
+│   │   │   ├── NewsPage.jsx     # Live news feed with AI sentiment analysis
 │   │   │   └── ClientsPage.jsx  # Adviser client book with sorted risk view
 │   │   └── components/
 │   │       ├── WellnessScore/
@@ -500,6 +538,10 @@ WealthPulse/
 - **SGD-denominated** — All values in Singapore Dollars, targeting the local market
 - **6 asset classes** — Includes crypto and tokenised assets alongside traditional classes, reflecting Schroders' forward-looking stance on digital wealth
 - **Wellness over returns** — The core innovation: measuring portfolio health holistically, not just performance
+- **Client-side projections** — Goal projections compute instantly via compound interest formulas (no API round-trip), enabling real-time slider interactivity
+- **Historical crisis data** — Real peak-to-trough drawdowns from actual market events, not simulated, giving users an authentic stress-test experience
+- **Live news with AI enrichment** — RSS feeds provide real headlines; Claude adds the intelligence layer (sentiment, relevance, asset class tagging)
+- **User-specific scenarios** — Stress tests apply to the currently selected investor's actual portfolio, not a generic benchmark
 
 ---
 

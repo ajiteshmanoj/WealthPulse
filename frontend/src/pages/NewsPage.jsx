@@ -61,7 +61,11 @@ export default function NewsPage() {
                     </div>
                   </div>
                   <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>
-                    {item.headline}
+                    {item.url ? (
+                      <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+                        {item.headline} <ExternalLink size={12} style={{ verticalAlign: -1, opacity: 0.5 }} />
+                      </a>
+                    ) : item.headline}
                   </h3>
                   <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 10 }}>
                     {item.summary}
