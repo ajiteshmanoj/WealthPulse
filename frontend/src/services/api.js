@@ -15,3 +15,5 @@ export const getGoal = (userId) => api.get(`/goals/${userId}`).then(r => r.data)
 export const calculateGoal = (data) => api.post('/goals/calculate', data).then(r => r.data);
 export const analyzeExpenses = (data) => api.post('/goals/expenses', data).then(r => r.data);
 export const getHistoricalCrises = () => api.get('/historical-crises').then(r => r.data);
+export const runWhatIf = (data) => api.post('/whatif', data).then(r => r.data);
+export const getTaxData = (userId) => api.get(`/tax/${userId}`).then(r => r.data);

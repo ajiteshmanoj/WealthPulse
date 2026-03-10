@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Routes, Route, NavLink, Navigate } from 'react-router-dom'
-import { Activity, PieChart, Newspaper, Zap, Brain, Users, Target, TrendingUp } from 'lucide-react'
+import { Activity, PieChart, Newspaper, Zap, Brain, Users, Target, TrendingUp, SlidersHorizontal, Receipt } from 'lucide-react'
 import Dashboard from './pages/Dashboard'
 import GoalsPage from './pages/GoalsPage'
 import ScenariosPage from './pages/ScenariosPage'
 import NewsPage from './pages/NewsPage'
 import ClientsPage from './pages/ClientsPage'
+import WhatIfPage from './pages/WhatIfPage'
+import TaxPage from './pages/TaxPage'
 import './App.css'
 
 const USERS = [
@@ -41,6 +43,12 @@ function App() {
           </NavLink>
           <NavLink to="/news" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
             <Newspaper size={18} /> Market Pulse
+          </NavLink>
+          <NavLink to="/whatif" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <SlidersHorizontal size={18} /> What-If Editor
+          </NavLink>
+          <NavLink to="/tax" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <Receipt size={18} /> Tax Optimization
           </NavLink>
         </div>
 
@@ -90,6 +98,8 @@ function App() {
           <Route path="/goals" element={<GoalsPage userId={userId} />} />
           <Route path="/scenarios" element={<ScenariosPage userId={userId} />} />
           <Route path="/news" element={<NewsPage />} />
+          <Route path="/whatif" element={<WhatIfPage userId={userId} />} />
+          <Route path="/tax" element={<TaxPage userId={userId} />} />
           <Route path="/clients" element={<ClientsPage />} />
         </Routes>
         <div style={{

@@ -20,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from routers import portfolio, wellness, news, scenarios, ai, goals
+from routers import portfolio, wellness, news, scenarios, ai, goals, whatif, tax
 
 app.include_router(portfolio.router)
 app.include_router(wellness.router)
@@ -28,6 +28,8 @@ app.include_router(news.router)
 app.include_router(scenarios.router)
 app.include_router(ai.router)
 app.include_router(goals.router)
+app.include_router(whatif.router)
+app.include_router(tax.router)
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "mock_data")
 
