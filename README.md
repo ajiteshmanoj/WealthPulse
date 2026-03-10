@@ -610,6 +610,6 @@ WealthPulse provides **financial information and analytics only** — it does NO
 
 ---
 
-## Team
+## Team PowerMoo (Ajitesh & Fang Ting)
 
-Built for the **NFC FinTech Innovator's Hackathon 2026** — Schroders Problem Statement.
+Built for the **NFC FinTech Innovator's Hackathon 2026** - Wealth Wellness Hub Problem Statement.
