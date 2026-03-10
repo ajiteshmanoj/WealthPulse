@@ -1,0 +1,62 @@
+{
+  "alex_tan": {
+    "user_id": "alex_tan",
+    "goal_type": "property",
+    "goal_name": "Property Purchase — BTO Down Payment",
+    "target_amount": 300000,
+    "target_years": 5,
+    "current_savings_toward_goal": 55000,
+    "monthly_contribution": 2000,
+    "expected_return_pct": 8,
+    "monthly_income": 6500,
+    "expenses": {
+      "housing": 800,
+      "food": 600,
+      "transport": 300,
+      "insurance": 350,
+      "loans": 200,
+      "lifestyle": 800,
+      "others": 250
+    }
+  },
+  "sarah_lim": {
+    "user_id": "sarah_lim",
+    "goal_type": "retirement",
+    "goal_name": "Retirement Fund",
+    "target_amount": 2000000,
+    "target_years": 25,
+    "current_savings_toward_goal": 420000,
+    "monthly_contribution": 3500,
+    "expected_return_pct": 7,
+    "monthly_income": 12000,
+    "expenses": {
+      "housing": 2200,
+      "food": 1200,
+      "transport": 600,
+      "insurance": 800,
+      "loans": 500,
+      "lifestyle": 1500,
+      "others": 700
+    }
+  },
+  "david_chen": {
+    "user_id": "david_chen",
+    "goal_type": "education",
+    "goal_name": "Children's University Education",
+    "target_amount": 150000,
+    "target_years": 10,
+    "current_savings_toward_goal": 45000,
+    "monthly_contribution": 800,
+    "expected_return_pct": 5,
+    "monthly_income": 15000,
+    "expenses": {
+      "housing": 2500,
+      "food": 1800,
+      "transport": 800,
+      "insurance": 1200,
+      "loans": 0,
+      "lifestyle": 2000,
+      "others": 1500
+    }
+  }
+}

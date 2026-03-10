@@ -1,0 +1,180 @@
+{
+  "alex_tan": {
+    "user_id": "alex_tan",
+    "name": "Alex Tan",
+    "age": 28,
+    "risk_profile": "aggressive",
+    "total_wealth": 185000,
+    "currency": "SGD",
+    "portfolio_vol_pct": 28,
+    "time_horizon": 10,
+    "holdings": {
+      "equities": [
+        { "ticker": "AAPL", "name": "Apple Inc.", "value": 16650, "allocation_pct": 9.0, "day_change_pct": 1.2 },
+        { "ticker": "NVDA", "name": "NVIDIA Corp.", "value": 14800, "allocation_pct": 8.0, "day_change_pct": 2.8 },
+        { "ticker": "SE", "name": "Sea Limited", "value": 12950, "allocation_pct": 7.0, "day_change_pct": -0.5 },
+        { "ticker": "GRAB", "name": "Grab Holdings", "value": 11100, "allocation_pct": 6.0, "day_change_pct": 0.3 },
+        { "ticker": "TSLA", "name": "Tesla Inc.", "value": 9250, "allocation_pct": 5.0, "day_change_pct": -1.8 }
+      ],
+      "bonds": [
+        { "name": "Singapore Savings Bond", "value": 7400, "allocation_pct": 4.0, "yield_pct": 3.1 },
+        { "name": "ABF SG Bond ETF", "value": 5550, "allocation_pct": 3.0, "yield_pct": 3.5 }
+      ],
+      "cash": [
+        { "name": "DBS Multiplier Account", "value": 9250, "allocation_pct": 5.0 },
+        { "name": "StashAway Simple", "value": 5550, "allocation_pct": 3.0 }
+      ],
+      "crypto": [
+        { "ticker": "BTC", "name": "Bitcoin", "value": 37000, "allocation_pct": 20.0, "day_change_pct": 3.1 },
+        { "ticker": "ETH", "name": "Ethereum", "value": 18500, "allocation_pct": 10.0, "day_change_pct": 2.4 },
+        { "ticker": "SOL", "name": "Solana", "value": 9250, "allocation_pct": 5.0, "day_change_pct": 5.6 }
+      ],
+      "private_assets": [
+        { "name": "Syfe REIT+ Portfolio", "value": 11100, "allocation_pct": 6.0, "liquidity": "medium" },
+        { "name": "Endowus Private Wealth Fund", "value": 7400, "allocation_pct": 4.0, "liquidity": "low" }
+      ],
+      "tokenised_assets": [
+        { "name": "Tokenised US Treasury (Ondo)", "value": 5550, "allocation_pct": 3.0, "type": "tokenised_bond" },
+        { "name": "Tokenised Real Estate (RealT)", "value": 3700, "allocation_pct": 2.0, "type": "tokenised_property" }
+      ]
+    },
+    "performance": {
+      "day_change_pct": 1.4,
+      "week_change_pct": 3.2,
+      "month_change_pct": -2.1,
+      "ytd_change_pct": 8.7
+    },
+    "wealth_history": [
+      { "month": "2025-04", "value": 152000 },
+      { "month": "2025-05", "value": 155000 },
+      { "month": "2025-06", "value": 149000 },
+      { "month": "2025-07", "value": 158000 },
+      { "month": "2025-08", "value": 162000 },
+      { "month": "2025-09", "value": 156000 },
+      { "month": "2025-10", "value": 164000 },
+      { "month": "2025-11", "value": 170000 },
+      { "month": "2025-12", "value": 168000 },
+      { "month": "2026-01", "value": 175000 },
+      { "month": "2026-02", "value": 180000 },
+      { "month": "2026-03", "value": 185000 }
+    ]
+  },
+  "sarah_lim": {
+    "user_id": "sarah_lim",
+    "name": "Sarah Lim",
+    "age": 42,
+    "risk_profile": "balanced",
+    "total_wealth": 820000,
+    "currency": "SGD",
+    "portfolio_vol_pct": 14,
+    "time_horizon": 20,
+    "holdings": {
+      "equities": [
+        { "ticker": "ES3", "name": "STI ETF", "value": 98400, "allocation_pct": 12.0, "day_change_pct": 0.3 },
+        { "ticker": "SPY", "name": "S&P 500 ETF", "value": 90200, "allocation_pct": 11.0, "day_change_pct": 0.8 },
+        { "ticker": "MSFT", "name": "Microsoft Corp.", "value": 73800, "allocation_pct": 9.0, "day_change_pct": 1.1 },
+        { "ticker": "D05", "name": "DBS Group", "value": 57400, "allocation_pct": 7.0, "day_change_pct": 0.4 },
+        { "ticker": "O39", "name": "OCBC Bank", "value": 49200, "allocation_pct": 6.0, "day_change_pct": -0.2 }
+      ],
+      "bonds": [
+        { "name": "Singapore Savings Bonds", "value": 82000, "allocation_pct": 10.0, "yield_pct": 3.1 },
+        { "name": "ABF SG Bond ETF", "value": 57400, "allocation_pct": 7.0, "yield_pct": 3.5 },
+        { "name": "iShares Global Aggregate Bond", "value": 65600, "allocation_pct": 8.0, "yield_pct": 4.2 }
+      ],
+      "cash": [
+        { "name": "OCBC 360 Account", "value": 57400, "allocation_pct": 7.0 },
+        { "name": "T-Bill (6-month)", "value": 41000, "allocation_pct": 5.0 }
+      ],
+      "crypto": [
+        { "ticker": "BTC", "name": "Bitcoin", "value": 49200, "allocation_pct": 6.0, "day_change_pct": 3.1 },
+        { "ticker": "ETH", "name": "Ethereum", "value": 16400, "allocation_pct": 2.0, "day_change_pct": 2.4 }
+      ],
+      "private_assets": [
+        { "name": "Schroders Global Cities Fund", "value": 24600, "allocation_pct": 3.0, "liquidity": "low" },
+        { "name": "CapitaLand Ascendas REIT", "value": 16400, "allocation_pct": 2.0, "liquidity": "medium" }
+      ],
+      "tokenised_assets": [
+        { "name": "Tokenised SGD Corp Bond (Matrixport)", "value": 24600, "allocation_pct": 3.0, "type": "tokenised_bond" },
+        { "name": "Tokenised Gold (Paxos)", "value": 16400, "allocation_pct": 2.0, "type": "tokenised_commodity" }
+      ]
+    },
+    "performance": {
+      "day_change_pct": 0.6,
+      "week_change_pct": 1.1,
+      "month_change_pct": 2.3,
+      "ytd_change_pct": 6.2
+    },
+    "wealth_history": [
+      { "month": "2025-04", "value": 740000 },
+      { "month": "2025-05", "value": 752000 },
+      { "month": "2025-06", "value": 765000 },
+      { "month": "2025-07", "value": 770000 },
+      { "month": "2025-08", "value": 758000 },
+      { "month": "2025-09", "value": 775000 },
+      { "month": "2025-10", "value": 790000 },
+      { "month": "2025-11", "value": 785000 },
+      { "month": "2025-12", "value": 800000 },
+      { "month": "2026-01", "value": 805000 },
+      { "month": "2026-02", "value": 812000 },
+      { "month": "2026-03", "value": 820000 }
+    ]
+  },
+  "david_chen": {
+    "user_id": "david_chen",
+    "name": "David Chen",
+    "age": 55,
+    "risk_profile": "conservative",
+    "total_wealth": 1240000,
+    "currency": "SGD",
+    "portfolio_vol_pct": 8,
+    "time_horizon": 10,
+    "holdings": {
+      "equities": [
+        { "ticker": "D05", "name": "DBS Group", "value": 86800, "allocation_pct": 7.0, "day_change_pct": 0.4 },
+        { "ticker": "O39", "name": "OCBC Bank", "value": 74400, "allocation_pct": 6.0, "day_change_pct": -0.2 },
+        { "ticker": "Z74", "name": "SingTel", "value": 62000, "allocation_pct": 5.0, "day_change_pct": 0.1 },
+        { "ticker": "ME8U", "name": "Mapletree Industrial Trust", "value": 49600, "allocation_pct": 4.0, "day_change_pct": -0.3 },
+        { "ticker": "C31", "name": "CapitaLand Investment", "value": 37200, "allocation_pct": 3.0, "day_change_pct": 0.5 }
+      ],
+      "bonds": [
+        { "name": "Singapore Savings Bonds", "value": 186000, "allocation_pct": 15.0, "yield_pct": 3.1 },
+        { "name": "ABF SG Bond ETF", "value": 124000, "allocation_pct": 10.0, "yield_pct": 3.5 },
+        { "name": "Nikko AM SGD Investment Grade Bond", "value": 99200, "allocation_pct": 8.0, "yield_pct": 3.8 },
+        { "name": "Astrea PE Bonds", "value": 86800, "allocation_pct": 7.0, "yield_pct": 4.5 }
+      ],
+      "cash": [
+        { "name": "UOB One Account", "value": 173600, "allocation_pct": 14.0 },
+        { "name": "Singapore T-Bills (6-month)", "value": 111600, "allocation_pct": 9.0 },
+        { "name": "CPF Ordinary Account", "value": 62000, "allocation_pct": 5.0 }
+      ],
+      "crypto": [
+        { "ticker": "BTC", "name": "Bitcoin", "value": 24800, "allocation_pct": 2.0, "day_change_pct": 3.1 }
+      ],
+      "private_assets": [
+        { "name": "Schroders Capital Semi-Liquid Fund", "value": 37200, "allocation_pct": 3.0, "liquidity": "low" },
+        { "name": "Mapletree Logistics Trust", "value": 24800, "allocation_pct": 2.0, "liquidity": "medium" }
+      ],
+      "tokenised_assets": []
+    },
+    "performance": {
+      "day_change_pct": 0.2,
+      "week_change_pct": 0.5,
+      "month_change_pct": 1.1,
+      "ytd_change_pct": 3.8
+    },
+    "wealth_history": [
+      { "month": "2025-04", "value": 1150000 },
+      { "month": "2025-05", "value": 1160000 },
+      { "month": "2025-06", "value": 1170000 },
+      { "month": "2025-07", "value": 1175000 },
+      { "month": "2025-08", "value": 1180000 },
+      { "month": "2025-09", "value": 1190000 },
+      { "month": "2025-10", "value": 1200000 },
+      { "month": "2025-11", "value": 1210000 },
+      { "month": "2025-12", "value": 1215000 },
+      { "month": "2026-01", "value": 1225000 },
+      { "month": "2026-02", "value": 1232000 },
+      { "month": "2026-03", "value": 1240000 }
+    ]
+  }
+}
