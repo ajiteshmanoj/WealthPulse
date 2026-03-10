@@ -4,7 +4,7 @@
 
 WealthPulse is a next-generation wealth wellness platform that redefines how investors and wealth advisers understand financial health. Instead of just tracking portfolio returns, WealthPulse introduces a proprietary **Wealth Wellness Score** — a holistic, multi-dimensional health metric that evaluates diversification, liquidity, behavioral resilience, goal alignment, and digital readiness across traditional and emerging asset classes including crypto and tokenised real-world assets.
 
-Built for Singapore-based investors and wealth managers, the platform combines real-time portfolio analytics with **AI-powered recommendations from Claude (Anthropic)**, interactive goal projections, historical crisis simulations, live financial news with AI sentiment analysis, and an intelligent adviser dashboard.
+Built for Singapore-based investors and wealth managers, the platform combines real-time portfolio analytics with **AI-powered recommendations from Claude (Anthropic)**, interactive goal projections, historical crisis simulations, live financial news with AI sentiment analysis, Singapore-specific tax optimization, a what-if portfolio editor, and an intelligent adviser dashboard.
 
 ---
 
@@ -36,10 +36,12 @@ The app has two perspectives accessible from the sidebar:
 
 ### Investor Flow
 1. Select an investor profile from the bottom of the sidebar (Alex Tan / Sarah Lim / David Chen)
-2. **Dashboard** — See total wealth, wellness score ring, performance stats, wealth history chart, score breakdown, asset allocation pie chart, AI recommendations, and full holdings table
+2. **Dashboard** — See total wealth, wellness score ring (click to view methodology modal), performance stats, wealth history chart, score breakdown, asset allocation pie chart, AI recommendations, and full holdings table
 3. **Goal Planner** — View goal progress, adjust timeline with interactive slider, visualize projected growth and portfolio strategy outcomes in real time
 4. **Scenario Lab** — Stress-test the portfolio against custom macro events or 6 real historical financial crises (2008 GFC, COVID-19, Dot-Com, etc.)
 5. **Market Pulse** — Browse live financial news from Yahoo Finance, CNBC, MarketWatch, Reuters, and more, with AI-powered sentiment analysis
+6. **What-If Editor** — Drag allocation sliders to explore how rebalancing affects your Wellness Score in real time
+7. **Tax Optimization** — View SRS tax relief, CPF top-up savings, dividend withholding tax analysis, and IRAS trading income risk assessment
 
 ---
 
@@ -65,6 +67,7 @@ The main dashboard provides a complete wealth overview at a glance.
 - Color changes based on score tier (green/blue/yellow/orange/red)
 - Descriptive label (e.g., "Fair — Attention needed in key areas")
 - Mini 12-month trend sparkline showing score evolution
+- **Click to open Score Methodology Modal** — shows the full formula, all 5 sub-score calculations with explanations, the user's current sub-scores with progress bars, and score range definitions
 
 **Score Breakdown:**
 - Five horizontal progress bars, one per sub-score dimension
@@ -272,6 +275,100 @@ Each client card displays in a single row:
 
 ---
 
+### 6. What-If Portfolio Editor
+
+Explore how rebalancing your portfolio affects your Wellness Score — in real time.
+
+**Allocation Sliders:**
+- 6 sliders (one per asset class) with automatic proportional rebalancing
+- When one slider moves up, others scale down proportionally to maintain 100% total
+- Total allocation indicator with green/red validation
+- Reset button to restore current portfolio allocations
+
+**Score Impact Panel:**
+- Side-by-side current vs proposed overall Wellness Score with delta badge
+- Per-dimension breakdown (Diversification, Liquidity, Behavioral Resilience, Goal Alignment, Digital Readiness)
+- Dual progress bars showing current and proposed scores per dimension
+- Color-coded deltas (green for improvement, red for decline)
+
+**Allocation Comparison:**
+- Stacked horizontal bars comparing current vs proposed allocation visually
+- Color-coded segments per asset class with percentage labels
+
+**Debounced API Calls:**
+- Backend recalculates scores using the same wellness engine as the main dashboard
+- 300ms debounce to avoid excessive API calls while dragging sliders
+- Portfolio volatility is re-estimated from asset-class-level volatility assumptions
+
+---
+
+### 7. Tax Optimization
+
+Singapore-specific tax optimization based on actual IRAS tax rules and Singapore financial regulations.
+
+**4 tabs:** Tax Savings, Dividend Tax, Holdings P&L, Risk Assessment
+
+#### Tax Savings Tab
+
+**Total Savings Banner:**
+- Aggregate annual tax savings across all strategies
+- Shows current income tax, marginal rate, and savings as % of tax bill
+
+**SRS Tax Relief Calculator:**
+- Maximum contribution: SGD 15,300/year (citizens/PRs)
+- Tax savings = contribution × marginal income tax rate
+- Effective bonus return percentage (instant return on contribution)
+- Years until penalty-free withdrawal (age 62)
+- Retirement benefit: only 50% of SRS withdrawals taxed, spread over 10 years
+
+**CPF Cash Top-Up Relief:**
+- Self top-up: up to SGD 8,000 to SA/RA
+- Family top-up: up to SGD 8,000 for family members
+- Combined tax savings at marginal rate
+- CPF SA earns 4% p.a. risk-free interest
+
+**Tax-Smart Suggestions:**
+- Prioritized recommendations (High / Medium / Low / Info)
+- Actionable advice: SRS maximization, CPF top-ups, dividend restructuring, trading risk mitigation
+
+#### Dividend Tax Tab
+
+**Dividend Withholding Tax (WHT) Analysis:**
+- Classifies every holding by domicile: SG, US, or Other
+- SG dividends: 100% tax-free under one-tier corporate tax system
+- US dividends: 30% withholding (Singapore has no US tax treaty)
+- Per-holding breakdown: value, yield, annual dividend, WHT rate, tax paid
+- Domicile badges and TAX-FREE labels for SG holdings
+- Total WHT avoidable by restructuring to SG equivalents
+
+#### Holdings P&L Tab
+
+- Unrealized gains and losses summary with net position
+- "No Capital Gains Tax" banner (Singapore does not tax individual capital gains)
+- Gains/Losses toggle with full holdings table (name, current value, cost basis, P&L, P&L %, holding period)
+- Tax-loss harvesting opportunities (losses > SGD 500) for strategic rebalancing
+
+#### Risk Assessment Tab
+
+**IRAS Trading Income Reclassification Risk:**
+- Risk level indicator: Low / Moderate / High
+- Flags holdings held under 12 months (short-term)
+- Calculates potential tax exposure if IRAS classifies gains as trading income
+- Short-term holdings table with holding period and P&L
+- IRAS "badges of trade" assessment factors
+
+**Singapore Income Tax Engine:**
+- Full YA2024+ bracket calculator (13 brackets from 0% to 24%)
+- Per-user marginal rate based on actual income from goal data
+
+| User | Annual Income | Marginal Rate | Total Potential Savings |
+|------|--------------|---------------|------------------------|
+| Alex Tan | SGD 78,000 | 7% | SGD 2,217 |
+| Sarah Lim | SGD 144,000 | 15% | SGD 5,202 |
+| David Chen | SGD 180,000 | 18% | SGD 5,634 |
+
+---
+
 ## Tech Stack
 
 | Layer      | Technology                                  | Purpose                              |
@@ -470,6 +567,18 @@ Base URL: `http://localhost:8000`
 | POST   | `/api/goals/calculate` | Runs full goal projection: monthly required, scenarios, milestones, wealth projection |
 | POST   | `/api/goals/expenses`  | Analyzes income vs expenses: surplus, investable amount, savings gap, smart suggestions |
 
+### What-If Editor
+
+| Method | Endpoint      | Description                           |
+|--------|---------------|---------------------------------------|
+| POST   | `/api/whatif`  | Simulates allocation changes and returns current vs proposed wellness scores. Body: `{ user_id, allocations: { equities: 35, bonds: 15, ... } }`. Allocations must sum to 100. Uses the same wellness scoring engine as `/api/wellness`. |
+
+### Tax Optimization
+
+| Method | Endpoint         | Description                           |
+|--------|------------------|---------------------------------------|
+| GET    | `/api/tax/{id}`  | Returns comprehensive Singapore tax analysis: SRS tax relief, CPF top-up relief, dividend WHT breakdown per holding, trading income risk assessment, unrealized P&L, tax-loss harvesting opportunities, and actionable suggestions. Uses YA2024+ income tax brackets. |
+
 ### Utility
 
 | Method | Endpoint   | Description                           |
@@ -491,7 +600,9 @@ WealthPulse/
 │   │   ├── news.py              # GET /api/news — live RSS feeds + Claude sentiment analysis
 │   │   ├── scenarios.py         # POST /api/scenario — 4 custom + 6 historical crises
 │   │   ├── ai.py                # POST /api/ai/recommend — Claude API + fallback
-│   │   └── goals.py             # Goal calculator, projections, expense analyzer
+│   │   ├── goals.py             # Goal calculator, projections, expense analyzer
+│   │   ├── whatif.py            # POST /api/whatif — allocation editor with live score recalculation
+│   │   └── tax.py               # GET /api/tax/{id} — SG tax optimization (SRS, CPF, WHT, IRAS risk)
 │   ├── mock_data/
 │   │   ├── portfolios.json      # 3 investor profiles (Alex, Sarah, David)
 │   │   ├── clients.json         # 8 adviser clients (Marcus → Aisha)
@@ -512,6 +623,8 @@ WealthPulse/
 │   │   │   ├── GoalsPage.jsx    # 3-tab goal planner with interactive slider projections
 │   │   │   ├── ScenariosPage.jsx # Custom + historical crisis stress testing
 │   │   │   ├── NewsPage.jsx     # Live news feed with AI sentiment analysis
+│   │   │   ├── WhatIfPage.jsx   # Allocation slider editor with real-time score impact
+│   │   │   ├── TaxPage.jsx      # 4-tab SG tax optimization (SRS, CPF, WHT, IRAS risk)
 │   │   │   └── ClientsPage.jsx  # Adviser client book with sorted risk view
 │   │   └── components/
 │   │       ├── WellnessScore/
@@ -544,6 +657,8 @@ WealthPulse/
 - **Historical crisis data** — Real peak-to-trough drawdowns from actual market events, not simulated, giving users an authentic stress-test experience
 - **Live news with AI enrichment** — RSS feeds provide real headlines; Claude adds the intelligence layer (sentiment, relevance, asset class tagging)
 - **User-specific scenarios** — Stress tests apply to the currently selected investor's actual portfolio, not a generic benchmark
+- **Singapore tax accuracy** — Tax optimization uses actual IRAS YA2024+ brackets (13 tiers, 0–24%), real SRS/CPF limits, and correct US WHT rates (30%, no SG-US treaty)
+- **What-if reuses wellness engine** — The allocation editor calls the same sub-score functions as the dashboard, ensuring score consistency across features
 
 ---
 
@@ -581,6 +696,8 @@ WealthPulse/
 | AI-powered recommendations (Claude) | Yes | No | Basic | No |
 | Adviser multi-client dashboard | Yes | No | No | No |
 | Live news with AI sentiment | Yes | No | No | No |
+| Singapore tax optimization (SRS/CPF/WHT) | Yes | No | No | No |
+| What-if allocation editor with live scoring | Yes | No | No | No |
 
 **WealthPulse is the only platform that unifies traditional, private, and tokenised assets under a single multi-dimensional Wellness Score that includes behavioral resilience and digital readiness — dimensions no existing robo-adviser measures.**
 
@@ -604,9 +721,16 @@ WealthPulse provides **financial information and analytics only** — it does NO
 - Crypto asset classification follows MAS guidelines on Digital Payment Token (DPT) services
 - The platform tracks but does not custody digital assets
 
+### Tax Information
+
+- Tax optimization features reference **IRAS YA2024+ income tax brackets** and publicly available SRS/CPF relief limits
+- All tax figures are estimates — the platform does not file taxes or interact with IRAS systems
+- Dividend withholding tax rates reflect the absence of a Singapore-US tax treaty (30% US WHT)
+- Users are advised to consult a qualified tax professional for personalised tax guidance
+
 ### Disclaimer
 
-> **WealthPulse does not provide regulated financial advice. All scores, projections, and recommendations are for informational and educational purposes only. Consult a licensed financial adviser before making investment decisions.**
+> **WealthPulse does not provide regulated financial advice or tax advice. All scores, projections, tax estimates, and recommendations are for informational and educational purposes only. Consult a licensed financial adviser or tax professional before making investment or tax decisions.**
 
 ---
 
