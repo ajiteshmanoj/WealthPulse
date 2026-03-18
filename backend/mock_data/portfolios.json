@@ -10,39 +10,39 @@
     "time_horizon": 10,
     "holdings": {
       "equities": [
-        { "ticker": "AAPL", "name": "Apple Inc.", "value": 16650, "allocation_pct": 9.0, "day_change_pct": 1.2 },
-        { "ticker": "NVDA", "name": "NVIDIA Corp.", "value": 14800, "allocation_pct": 8.0, "day_change_pct": 2.8 },
-        { "ticker": "SE", "name": "Sea Limited", "value": 12950, "allocation_pct": 7.0, "day_change_pct": -0.5 },
-        { "ticker": "GRAB", "name": "Grab Holdings", "value": 11100, "allocation_pct": 6.0, "day_change_pct": 0.3 },
-        { "ticker": "TSLA", "name": "Tesla Inc.", "value": 9250, "allocation_pct": 5.0, "day_change_pct": -1.8 }
+        { "ticker": "AAPL", "name": "Apple Inc.", "value": 16650, "allocation_pct": 9.0, "day_change_pct": 0.8, "price_usd": 254.23, "shares": 49, "trend": [232, 228, 235, 241, 238, 244, 240, 237, 243, 248, 245, 250, 247, 252, 249, 253, 250, 248, 252, 255, 251, 253, 256, 258, 255, 252, 249, 253, 256, 254] },
+        { "ticker": "NVDA", "name": "NVIDIA Corp.", "value": 14800, "allocation_pct": 8.0, "day_change_pct": -1.2, "price_usd": 181.96, "shares": 61, "trend": [195, 198, 192, 188, 194, 199, 203, 197, 191, 186, 190, 193, 188, 185, 189, 192, 187, 183, 186, 190, 188, 185, 182, 179, 183, 186, 184, 180, 183, 182] },
+        { "ticker": "SE", "name": "Sea Limited", "value": 12950, "allocation_pct": 7.0, "day_change_pct": 1.5, "price_usd": 86.58, "shares": 112, "trend": [72, 74, 73, 76, 78, 77, 79, 81, 80, 82, 84, 83, 81, 83, 85, 84, 82, 84, 86, 85, 83, 85, 84, 86, 88, 87, 85, 86, 85, 87] },
+        { "ticker": "GRAB", "name": "Grab Holdings", "value": 11100, "allocation_pct": 6.0, "day_change_pct": -0.4, "price_usd": 4.15, "shares": 2000, "trend": [4.52, 4.48, 4.55, 4.50, 4.45, 4.42, 4.38, 4.35, 4.40, 4.37, 4.32, 4.28, 4.33, 4.30, 4.25, 4.22, 4.28, 4.25, 4.20, 4.18, 4.22, 4.19, 4.15, 4.12, 4.18, 4.15, 4.10, 4.13, 4.17, 4.15] },
+        { "ticker": "TSLA", "name": "Tesla Inc.", "value": 9250, "allocation_pct": 5.0, "day_change_pct": -2.3, "price_usd": 398.10, "shares": 17, "trend": [435, 442, 438, 430, 425, 418, 422, 415, 410, 418, 412, 405, 408, 415, 410, 405, 398, 402, 410, 405, 400, 395, 402, 408, 405, 400, 395, 398, 402, 398] }
       ],
       "bonds": [
-        { "name": "Singapore Savings Bond", "value": 7400, "allocation_pct": 4.0, "yield_pct": 3.1 },
-        { "name": "ABF SG Bond ETF", "value": 5550, "allocation_pct": 3.0, "yield_pct": 3.5 }
+        { "name": "Singapore Savings Bond (Mar 2026)", "value": 7400, "allocation_pct": 4.0, "yield_pct": 1.99, "trend": [100, 100.1, 100.1, 100.2, 100.2, 100.2, 100.3, 100.3, 100.3, 100.4, 100.4, 100.4, 100.5, 100.5, 100.5, 100.5, 100.6, 100.6, 100.6, 100.6, 100.7, 100.7, 100.7, 100.7, 100.8, 100.8, 100.8, 100.8, 100.9, 100.9] },
+        { "name": "ABF SG Bond ETF (A35)", "value": 5550, "allocation_pct": 3.0, "yield_pct": 2.33, "price_sgd": 1.14, "trend": [1.12, 1.12, 1.13, 1.13, 1.13, 1.12, 1.13, 1.13, 1.14, 1.13, 1.13, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.14, 1.14, 1.14, 1.14] }
       ],
       "cash": [
-        { "name": "DBS Multiplier Account", "value": 9250, "allocation_pct": 5.0 },
-        { "name": "StashAway Simple", "value": 5550, "allocation_pct": 3.0 }
+        { "name": "DBS Multiplier Account", "value": 9250, "allocation_pct": 5.0, "trend": [9200, 9205, 9210, 9215, 9218, 9220, 9222, 9225, 9228, 9230, 9232, 9234, 9235, 9237, 9238, 9240, 9241, 9242, 9243, 9244, 9245, 9246, 9247, 9248, 9248, 9249, 9249, 9250, 9250, 9250] },
+        { "name": "StashAway Simple", "value": 5550, "allocation_pct": 3.0, "trend": [5520, 5522, 5524, 5526, 5528, 5530, 5531, 5533, 5534, 5536, 5537, 5538, 5539, 5540, 5541, 5542, 5543, 5544, 5545, 5545, 5546, 5547, 5547, 5548, 5548, 5549, 5549, 5550, 5550, 5550] }
       ],
       "crypto": [
-        { "ticker": "BTC", "name": "Bitcoin", "value": 37000, "allocation_pct": 20.0, "day_change_pct": 3.1 },
-        { "ticker": "ETH", "name": "Ethereum", "value": 18500, "allocation_pct": 10.0, "day_change_pct": 2.4 },
-        { "ticker": "SOL", "name": "Solana", "value": 9250, "allocation_pct": 5.0, "day_change_pct": 5.6 }
+        { "ticker": "BTC", "name": "Bitcoin", "value": 37000, "allocation_pct": 20.0, "day_change_pct": 1.4, "price_usd": 72483, "trend": [84200, 82500, 80100, 78400, 79800, 77200, 75600, 76900, 74500, 73200, 75100, 73800, 72100, 74500, 73200, 71800, 70500, 72100, 73400, 71800, 70200, 71500, 72800, 71200, 70100, 71800, 73200, 72000, 71500, 72483] },
+        { "ticker": "ETH", "name": "Ethereum", "value": 18500, "allocation_pct": 10.0, "day_change_pct": -0.8, "price_usd": 2333, "trend": [2680, 2640, 2590, 2550, 2580, 2520, 2490, 2530, 2470, 2440, 2480, 2450, 2410, 2440, 2400, 2370, 2350, 2390, 2420, 2380, 2350, 2370, 2400, 2380, 2350, 2330, 2360, 2340, 2350, 2333] },
+        { "ticker": "SOL", "name": "Solana", "value": 9250, "allocation_pct": 5.0, "day_change_pct": 2.1, "price_usd": 94.38, "trend": [118, 115, 112, 108, 111, 106, 103, 107, 102, 99, 103, 100, 97, 100, 98, 95, 92, 96, 99, 96, 93, 95, 98, 96, 93, 91, 94, 93, 92, 94] }
       ],
       "private_assets": [
-        { "name": "Syfe REIT+ Portfolio", "value": 11100, "allocation_pct": 6.0, "liquidity": "medium" },
-        { "name": "Endowus Private Wealth Fund", "value": 7400, "allocation_pct": 4.0, "liquidity": "low" }
+        { "name": "Syfe REIT+ Portfolio", "value": 11100, "allocation_pct": 6.0, "liquidity": "medium", "trend": [10800, 10830, 10860, 10850, 10880, 10900, 10920, 10910, 10940, 10960, 10950, 10970, 10990, 10980, 11000, 11010, 11020, 11030, 11040, 11050, 11060, 11050, 11070, 11080, 11070, 11080, 11090, 11090, 11100, 11100] },
+        { "name": "Endowus Private Wealth Fund", "value": 7400, "allocation_pct": 4.0, "liquidity": "low", "trend": [7200, 7210, 7220, 7230, 7240, 7250, 7260, 7270, 7275, 7280, 7290, 7300, 7305, 7310, 7320, 7330, 7335, 7340, 7345, 7350, 7355, 7360, 7365, 7370, 7375, 7380, 7385, 7390, 7395, 7400] }
       ],
       "tokenised_assets": [
-        { "name": "Tokenised US Treasury (Ondo)", "value": 5550, "allocation_pct": 3.0, "type": "tokenised_bond" },
-        { "name": "Tokenised Real Estate (RealT)", "value": 3700, "allocation_pct": 2.0, "type": "tokenised_property" }
+        { "name": "Tokenised US Treasury (Ondo)", "value": 5550, "allocation_pct": 3.0, "type": "tokenised_bond", "trend": [5480, 5485, 5490, 5492, 5495, 5498, 5500, 5505, 5508, 5510, 5512, 5515, 5518, 5520, 5522, 5525, 5527, 5530, 5532, 5534, 5536, 5538, 5540, 5542, 5544, 5545, 5547, 5548, 5549, 5550] },
+        { "name": "Tokenised Real Estate (RealT)", "value": 3700, "allocation_pct": 2.0, "type": "tokenised_property", "trend": [3620, 3630, 3640, 3635, 3645, 3650, 3655, 3660, 3658, 3665, 3670, 3668, 3675, 3678, 3680, 3682, 3685, 3688, 3690, 3692, 3694, 3695, 3696, 3698, 3698, 3699, 3700, 3700, 3700, 3700] }
       ]
     },
     "performance": {
-      "day_change_pct": 1.4,
-      "week_change_pct": 3.2,
-      "month_change_pct": -2.1,
-      "ytd_change_pct": 8.7
+      "day_change_pct": 0.6,
+      "week_change_pct": -1.8,
+      "month_change_pct": -3.4,
+      "ytd_change_pct": 5.2
     },
     "wealth_history": [
       { "month": "2025-04", "value": 152000 },
@@ -70,39 +70,39 @@
     "time_horizon": 20,
     "holdings": {
       "equities": [
-        { "ticker": "ES3", "name": "STI ETF", "value": 98400, "allocation_pct": 12.0, "day_change_pct": 0.3 },
-        { "ticker": "SPY", "name": "S&P 500 ETF", "value": 90200, "allocation_pct": 11.0, "day_change_pct": 0.8 },
-        { "ticker": "MSFT", "name": "Microsoft Corp.", "value": 73800, "allocation_pct": 9.0, "day_change_pct": 1.1 },
-        { "ticker": "D05", "name": "DBS Group", "value": 57400, "allocation_pct": 7.0, "day_change_pct": 0.4 },
-        { "ticker": "O39", "name": "OCBC Bank", "value": 49200, "allocation_pct": 6.0, "day_change_pct": -0.2 }
+        { "ticker": "ES3", "name": "STI ETF (SPDR)", "value": 98400, "allocation_pct": 12.0, "day_change_pct": 0.2, "price_sgd": 4.85, "shares": 20289, "trend": [4.65, 4.68, 4.70, 4.72, 4.70, 4.73, 4.75, 4.74, 4.76, 4.78, 4.77, 4.79, 4.80, 4.78, 4.80, 4.82, 4.81, 4.83, 4.82, 4.84, 4.83, 4.84, 4.85, 4.84, 4.83, 4.85, 4.84, 4.85, 4.86, 4.85] },
+        { "ticker": "SPY", "name": "S&P 500 ETF", "value": 90200, "allocation_pct": 11.0, "day_change_pct": -0.5, "price_usd": 671.85, "shares": 100, "trend": [688, 692, 690, 685, 688, 683, 680, 684, 679, 676, 680, 677, 674, 678, 675, 672, 676, 673, 670, 674, 672, 670, 673, 675, 672, 670, 674, 673, 670, 672] },
+        { "ticker": "MSFT", "name": "Microsoft Corp.", "value": 73800, "allocation_pct": 9.0, "day_change_pct": 0.7, "price_usd": 401.05, "shares": 137, "trend": [388, 392, 390, 394, 396, 393, 395, 398, 396, 394, 397, 399, 396, 398, 400, 397, 399, 401, 398, 396, 399, 401, 399, 397, 400, 402, 400, 398, 400, 401] },
+        { "ticker": "D05", "name": "DBS Group", "value": 57400, "allocation_pct": 7.0, "day_change_pct": 0.3, "price_sgd": 57.76, "shares": 994, "trend": [55.20, 55.50, 55.80, 56.10, 55.90, 56.20, 56.50, 56.30, 56.60, 56.80, 56.70, 57.00, 57.20, 57.00, 57.20, 57.40, 57.20, 57.40, 57.60, 57.40, 57.50, 57.60, 57.50, 57.60, 57.70, 57.50, 57.60, 57.70, 57.80, 57.76] },
+        { "ticker": "O39", "name": "OCBC Bank", "value": 49200, "allocation_pct": 6.0, "day_change_pct": -0.1, "price_sgd": 21.30, "shares": 2310, "trend": [20.80, 20.90, 20.95, 21.00, 20.95, 21.05, 21.10, 21.05, 21.10, 21.15, 21.10, 21.20, 21.25, 21.20, 21.15, 21.20, 21.25, 21.20, 21.25, 21.30, 21.25, 21.20, 21.25, 21.30, 21.25, 21.30, 21.35, 21.30, 21.25, 21.30] }
       ],
       "bonds": [
-        { "name": "Singapore Savings Bonds", "value": 82000, "allocation_pct": 10.0, "yield_pct": 3.1 },
-        { "name": "ABF SG Bond ETF", "value": 57400, "allocation_pct": 7.0, "yield_pct": 3.5 },
-        { "name": "iShares Global Aggregate Bond", "value": 65600, "allocation_pct": 8.0, "yield_pct": 4.2 }
+        { "name": "Singapore Savings Bonds", "value": 82000, "allocation_pct": 10.0, "yield_pct": 1.99, "trend": [100, 100.1, 100.1, 100.2, 100.2, 100.3, 100.3, 100.3, 100.4, 100.4, 100.4, 100.5, 100.5, 100.5, 100.5, 100.6, 100.6, 100.6, 100.6, 100.7, 100.7, 100.7, 100.7, 100.8, 100.8, 100.8, 100.8, 100.9, 100.9, 100.9] },
+        { "name": "ABF SG Bond ETF (A35)", "value": 57400, "allocation_pct": 7.0, "yield_pct": 2.33, "price_sgd": 1.14, "trend": [1.12, 1.12, 1.13, 1.13, 1.13, 1.12, 1.13, 1.13, 1.14, 1.13, 1.13, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.14, 1.14, 1.14, 1.14] },
+        { "name": "iShares Global Aggregate Bond (AGGG)", "value": 65600, "allocation_pct": 8.0, "yield_pct": 2.99, "trend": [4.82, 4.83, 4.84, 4.83, 4.85, 4.86, 4.85, 4.87, 4.86, 4.88, 4.87, 4.88, 4.89, 4.88, 4.89, 4.90, 4.89, 4.90, 4.91, 4.90, 4.91, 4.92, 4.91, 4.92, 4.93, 4.92, 4.93, 4.93, 4.94, 4.94] }
       ],
       "cash": [
-        { "name": "OCBC 360 Account", "value": 57400, "allocation_pct": 7.0 },
-        { "name": "T-Bill (6-month)", "value": 41000, "allocation_pct": 5.0 }
+        { "name": "OCBC 360 Account", "value": 57400, "allocation_pct": 7.0, "trend": [57100, 57120, 57140, 57160, 57180, 57200, 57210, 57220, 57240, 57250, 57260, 57270, 57280, 57290, 57300, 57310, 57320, 57330, 57340, 57340, 57350, 57360, 57370, 57370, 57380, 57380, 57390, 57390, 57400, 57400] },
+        { "name": "T-Bill 6-month (Mar 2026)", "value": 41000, "allocation_pct": 5.0, "yield_pct": 1.37, "trend": [40800, 40810, 40820, 40830, 40840, 40850, 40860, 40870, 40880, 40890, 40900, 40905, 40910, 40920, 40930, 40935, 40940, 40950, 40955, 40960, 40965, 40970, 40975, 40980, 40985, 40988, 40990, 40993, 40996, 41000] }
       ],
       "crypto": [
-        { "ticker": "BTC", "name": "Bitcoin", "value": 49200, "allocation_pct": 6.0, "day_change_pct": 3.1 },
-        { "ticker": "ETH", "name": "Ethereum", "value": 16400, "allocation_pct": 2.0, "day_change_pct": 2.4 }
+        { "ticker": "BTC", "name": "Bitcoin", "value": 49200, "allocation_pct": 6.0, "day_change_pct": 1.4, "price_usd": 72483, "trend": [84200, 82500, 80100, 78400, 79800, 77200, 75600, 76900, 74500, 73200, 75100, 73800, 72100, 74500, 73200, 71800, 70500, 72100, 73400, 71800, 70200, 71500, 72800, 71200, 70100, 71800, 73200, 72000, 71500, 72483] },
+        { "ticker": "ETH", "name": "Ethereum", "value": 16400, "allocation_pct": 2.0, "day_change_pct": -0.8, "price_usd": 2333, "trend": [2680, 2640, 2590, 2550, 2580, 2520, 2490, 2530, 2470, 2440, 2480, 2450, 2410, 2440, 2400, 2370, 2350, 2390, 2420, 2380, 2350, 2370, 2400, 2380, 2350, 2330, 2360, 2340, 2350, 2333] }
       ],
       "private_assets": [
-        { "name": "Schroders Global Cities Fund", "value": 24600, "allocation_pct": 3.0, "liquidity": "low" },
-        { "name": "CapitaLand Ascendas REIT", "value": 16400, "allocation_pct": 2.0, "liquidity": "medium" }
+        { "name": "Schroders Global Cities Fund", "value": 24600, "allocation_pct": 3.0, "liquidity": "low", "trend": [24000, 24050, 24100, 24080, 24120, 24150, 24180, 24200, 24220, 24250, 24280, 24270, 24300, 24320, 24340, 24360, 24380, 24400, 24420, 24440, 24460, 24470, 24480, 24500, 24520, 24540, 24560, 24570, 24580, 24600] },
+        { "name": "CapitaLand Ascendas REIT", "value": 16400, "allocation_pct": 2.0, "liquidity": "medium", "trend": [16000, 16020, 16050, 16080, 16060, 16090, 16120, 16100, 16130, 16150, 16140, 16170, 16190, 16200, 16220, 16240, 16250, 16270, 16280, 16300, 16310, 16320, 16340, 16350, 16360, 16370, 16380, 16385, 16390, 16400] }
       ],
       "tokenised_assets": [
-        { "name": "Tokenised SGD Corp Bond (Matrixport)", "value": 24600, "allocation_pct": 3.0, "type": "tokenised_bond" },
-        { "name": "Tokenised Gold (Paxos)", "value": 16400, "allocation_pct": 2.0, "type": "tokenised_commodity" }
+        { "name": "Tokenised SGD Corp Bond (Matrixport)", "value": 24600, "allocation_pct": 3.0, "type": "tokenised_bond", "trend": [24300, 24320, 24340, 24350, 24360, 24370, 24380, 24400, 24410, 24420, 24430, 24440, 24450, 24460, 24470, 24480, 24490, 24500, 24510, 24520, 24530, 24540, 24550, 24560, 24570, 24575, 24580, 24585, 24590, 24600] },
+        { "name": "Tokenised Gold (Paxos)", "value": 16400, "allocation_pct": 2.0, "type": "tokenised_commodity", "trend": [15800, 15850, 15900, 15920, 15960, 16000, 16020, 16050, 16080, 16060, 16100, 16120, 16140, 16150, 16180, 16200, 16220, 16240, 16250, 16270, 16290, 16300, 16320, 16340, 16350, 16360, 16370, 16380, 16390, 16400] }
       ]
     },
     "performance": {
-      "day_change_pct": 0.6,
-      "week_change_pct": 1.1,
-      "month_change_pct": 2.3,
-      "ytd_change_pct": 6.2
+      "day_change_pct": 0.3,
+      "week_change_pct": -0.6,
+      "month_change_pct": 1.1,
+      "ytd_change_pct": 4.8
     },
     "wealth_history": [
       { "month": "2025-04", "value": 740000 },
@@ -130,37 +130,37 @@
     "time_horizon": 10,
     "holdings": {
       "equities": [
-        { "ticker": "D05", "name": "DBS Group", "value": 86800, "allocation_pct": 7.0, "day_change_pct": 0.4 },
-        { "ticker": "O39", "name": "OCBC Bank", "value": 74400, "allocation_pct": 6.0, "day_change_pct": -0.2 },
-        { "ticker": "Z74", "name": "SingTel", "value": 62000, "allocation_pct": 5.0, "day_change_pct": 0.1 },
-        { "ticker": "ME8U", "name": "Mapletree Industrial Trust", "value": 49600, "allocation_pct": 4.0, "day_change_pct": -0.3 },
-        { "ticker": "C31", "name": "CapitaLand Investment", "value": 37200, "allocation_pct": 3.0, "day_change_pct": 0.5 }
+        { "ticker": "D05", "name": "DBS Group", "value": 86800, "allocation_pct": 7.0, "day_change_pct": 0.3, "price_sgd": 57.76, "shares": 1503, "trend": [55.20, 55.50, 55.80, 56.10, 55.90, 56.20, 56.50, 56.30, 56.60, 56.80, 56.70, 57.00, 57.20, 57.00, 57.20, 57.40, 57.20, 57.40, 57.60, 57.40, 57.50, 57.60, 57.50, 57.60, 57.70, 57.50, 57.60, 57.70, 57.80, 57.76] },
+        { "ticker": "O39", "name": "OCBC Bank", "value": 74400, "allocation_pct": 6.0, "day_change_pct": -0.1, "price_sgd": 21.30, "shares": 3493, "trend": [20.80, 20.90, 20.95, 21.00, 20.95, 21.05, 21.10, 21.05, 21.10, 21.15, 21.10, 21.20, 21.25, 21.20, 21.15, 21.20, 21.25, 21.20, 21.25, 21.30, 21.25, 21.20, 21.25, 21.30, 21.25, 21.30, 21.35, 21.30, 21.25, 21.30] },
+        { "ticker": "Z74", "name": "SingTel", "value": 62000, "allocation_pct": 5.0, "day_change_pct": 0.4, "price_sgd": 4.96, "shares": 12500, "trend": [4.70, 4.72, 4.75, 4.78, 4.76, 4.79, 4.82, 4.80, 4.83, 4.85, 4.84, 4.86, 4.88, 4.87, 4.89, 4.90, 4.89, 4.91, 4.92, 4.91, 4.93, 4.94, 4.93, 4.94, 4.95, 4.94, 4.95, 4.96, 4.95, 4.96] },
+        { "ticker": "ME8U", "name": "Mapletree Industrial Trust", "value": 49600, "allocation_pct": 4.0, "day_change_pct": -0.5, "price_sgd": 2.02, "shares": 24554, "trend": [2.10, 2.09, 2.08, 2.07, 2.08, 2.07, 2.06, 2.07, 2.06, 2.05, 2.06, 2.05, 2.04, 2.05, 2.04, 2.03, 2.04, 2.03, 2.04, 2.03, 2.02, 2.03, 2.02, 2.03, 2.02, 2.01, 2.02, 2.03, 2.02, 2.02] },
+        { "ticker": "9CI", "name": "CapitaLand Investment", "value": 37200, "allocation_pct": 3.0, "day_change_pct": 0.2, "price_sgd": 2.88, "shares": 12917, "trend": [2.72, 2.74, 2.75, 2.77, 2.76, 2.78, 2.79, 2.78, 2.80, 2.81, 2.80, 2.82, 2.83, 2.82, 2.84, 2.85, 2.84, 2.85, 2.86, 2.85, 2.86, 2.87, 2.86, 2.87, 2.88, 2.87, 2.88, 2.88, 2.87, 2.88] }
       ],
       "bonds": [
-        { "name": "Singapore Savings Bonds", "value": 186000, "allocation_pct": 15.0, "yield_pct": 3.1 },
-        { "name": "ABF SG Bond ETF", "value": 124000, "allocation_pct": 10.0, "yield_pct": 3.5 },
-        { "name": "Nikko AM SGD Investment Grade Bond", "value": 99200, "allocation_pct": 8.0, "yield_pct": 3.8 },
-        { "name": "Astrea PE Bonds", "value": 86800, "allocation_pct": 7.0, "yield_pct": 4.5 }
+        { "name": "Singapore Savings Bonds", "value": 186000, "allocation_pct": 15.0, "yield_pct": 1.99, "trend": [100, 100.1, 100.1, 100.2, 100.2, 100.3, 100.3, 100.3, 100.4, 100.4, 100.4, 100.5, 100.5, 100.5, 100.5, 100.6, 100.6, 100.6, 100.6, 100.7, 100.7, 100.7, 100.7, 100.8, 100.8, 100.8, 100.8, 100.9, 100.9, 100.9] },
+        { "name": "ABF SG Bond ETF (A35)", "value": 124000, "allocation_pct": 10.0, "yield_pct": 2.33, "price_sgd": 1.14, "trend": [1.12, 1.12, 1.13, 1.13, 1.13, 1.12, 1.13, 1.13, 1.14, 1.13, 1.13, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.14, 1.13, 1.14, 1.14, 1.14, 1.14, 1.14, 1.14, 1.14] },
+        { "name": "Nikko AM SGD Investment Grade Bond", "value": 99200, "allocation_pct": 8.0, "yield_pct": 2.80, "trend": [1.08, 1.08, 1.09, 1.09, 1.09, 1.09, 1.09, 1.10, 1.10, 1.10, 1.10, 1.10, 1.10, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.12, 1.12, 1.12, 1.12, 1.12, 1.12, 1.12, 1.13, 1.13, 1.13, 1.13] },
+        { "name": "Astrea PE Bonds", "value": 86800, "allocation_pct": 7.0, "yield_pct": 4.50, "trend": [100, 100.2, 100.3, 100.4, 100.5, 100.6, 100.7, 100.8, 100.9, 101.0, 101.0, 101.1, 101.2, 101.3, 101.3, 101.4, 101.5, 101.5, 101.6, 101.7, 101.7, 101.8, 101.8, 101.9, 102.0, 102.0, 102.1, 102.1, 102.2, 102.2] }
       ],
       "cash": [
-        { "name": "UOB One Account", "value": 173600, "allocation_pct": 14.0 },
-        { "name": "Singapore T-Bills (6-month)", "value": 111600, "allocation_pct": 9.0 },
-        { "name": "CPF Ordinary Account", "value": 62000, "allocation_pct": 5.0 }
+        { "name": "UOB One Account", "value": 173600, "allocation_pct": 14.0, "trend": [173000, 173050, 173100, 173140, 173180, 173200, 173230, 173260, 173290, 173310, 173340, 173360, 173380, 173400, 173420, 173440, 173460, 173480, 173490, 173500, 173520, 173530, 173550, 173560, 173570, 173580, 173585, 173590, 173595, 173600] },
+        { "name": "Singapore T-Bills 6-month", "value": 111600, "allocation_pct": 9.0, "yield_pct": 1.37, "trend": [111200, 111220, 111240, 111260, 111280, 111300, 111320, 111340, 111360, 111370, 111380, 111400, 111410, 111420, 111440, 111450, 111460, 111480, 111490, 111500, 111520, 111530, 111540, 111550, 111560, 111570, 111575, 111580, 111590, 111600] },
+        { "name": "CPF Ordinary Account", "value": 62000, "allocation_pct": 5.0, "yield_pct": 2.50, "trend": [61600, 61620, 61640, 61660, 61680, 61700, 61720, 61740, 61750, 61760, 61780, 61800, 61810, 61820, 61840, 61850, 61860, 61880, 61890, 61900, 61920, 61930, 61940, 61950, 61960, 61970, 61975, 61980, 61990, 62000] }
       ],
       "crypto": [
-        { "ticker": "BTC", "name": "Bitcoin", "value": 24800, "allocation_pct": 2.0, "day_change_pct": 3.1 }
+        { "ticker": "BTC", "name": "Bitcoin", "value": 24800, "allocation_pct": 2.0, "day_change_pct": 1.4, "price_usd": 72483, "trend": [84200, 82500, 80100, 78400, 79800, 77200, 75600, 76900, 74500, 73200, 75100, 73800, 72100, 74500, 73200, 71800, 70500, 72100, 73400, 71800, 70200, 71500, 72800, 71200, 70100, 71800, 73200, 72000, 71500, 72483] }
       ],
       "private_assets": [
-        { "name": "Schroders Capital Semi-Liquid Fund", "value": 37200, "allocation_pct": 3.0, "liquidity": "low" },
-        { "name": "Mapletree Logistics Trust", "value": 24800, "allocation_pct": 2.0, "liquidity": "medium" }
+        { "name": "Schroders Capital Semi-Liquid Fund", "value": 37200, "allocation_pct": 3.0, "liquidity": "low", "trend": [36500, 36550, 36600, 36640, 36680, 36720, 36760, 36790, 36820, 36850, 36880, 36900, 36930, 36950, 36980, 37000, 37020, 37040, 37060, 37080, 37100, 37110, 37130, 37140, 37150, 37160, 37170, 37180, 37190, 37200] },
+        { "name": "Mapletree Logistics Trust", "value": 24800, "allocation_pct": 2.0, "liquidity": "medium", "trend": [24200, 24250, 24280, 24300, 24320, 24350, 24380, 24400, 24420, 24440, 24460, 24480, 24500, 24520, 24540, 24560, 24580, 24600, 24620, 24640, 24650, 24670, 24690, 24710, 24720, 24740, 24760, 24770, 24790, 24800] }
       ],
       "tokenised_assets": []
     },
     "performance": {
-      "day_change_pct": 0.2,
-      "week_change_pct": 0.5,
-      "month_change_pct": 1.1,
-      "ytd_change_pct": 3.8
+      "day_change_pct": 0.1,
+      "week_change_pct": 0.2,
+      "month_change_pct": 0.8,
+      "ytd_change_pct": 2.9
     },
     "wealth_history": [
       { "month": "2025-04", "value": 1150000 },

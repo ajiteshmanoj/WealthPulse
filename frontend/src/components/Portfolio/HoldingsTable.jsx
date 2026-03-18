@@ -16,6 +16,49 @@ const COLORS = {
   tokenised_assets: '#06b6d4',
 }
 
+function Sparkline({ data, width = 80, height = 28 }) {
+  if (!data || data.length < 2) return null
+
+  const min = Math.min(...data)
+  const max = Math.max(...data)
+  const range = max - min || 1
+
+  const points = data.map((val, i) => {
+    const x = (i / (data.length - 1)) * width
+    const y = height - 2 - ((val - min) / range) * (height - 4)
+    return `${x},${y}`
+  }).join(' ')
+
+  const isUp = data[data.length - 1] >= data[0]
+  const color = isUp ? '#10b981' : '#ef4444'
+
+  // Create fill area
+  const fillPoints = `0,${height} ${points} ${width},${height}`
+
+  return (
+    <svg width={width} height={height} style={{ display: 'block' }}>
+      <defs>
+        <linearGradient id={`grad-${isUp ? 'up' : 'down'}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.3" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polygon
+        points={fillPoints}
+        fill={`url(#grad-${isUp ? 'up' : 'down'})`}
+      />
+      <polyline
+        points={points}
+        fill="none"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export default function HoldingsTable({ holdings, activeClass = 'all' }) {
   if (!holdings) return null
 
@@ -28,6 +71,7 @@ export default function HoldingsTable({ holdings, activeClass = 'all' }) {
       {classes.map(cls => {
         const items = holdings[cls]
         if (!items || items.length === 0) return null
+        const hasTrend = items.some(item => item.trend && item.trend.length > 1)
         return (
           <div key={cls} style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -39,6 +83,7 @@ export default function HoldingsTable({ holdings, activeClass = 'all' }) {
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border)' }}>
                   <th style={thStyle}>Name</th>
+                  {hasTrend && <th style={{ ...thStyle, textAlign: 'center' }}>30D Trend</th>}
                   <th style={{ ...thStyle, textAlign: 'right' }}>Value (SGD)</th>
                   <th style={{ ...thStyle, textAlign: 'right' }}>Allocation</th>
                   {cls === 'equities' || cls === 'crypto' ? (
@@ -72,6 +117,15 @@ export default function HoldingsTable({ holdings, activeClass = 'all' }) {
                         <span style={{ fontSize: 13 }}>{item.name}</span>
                       </div>
                     </td>
+                    {hasTrend && (
+                      <td style={{ ...tdStyle, textAlign: 'center' }}>
+                        {item.trend && item.trend.length > 1 ? (
+                          <Sparkline data={item.trend} />
+                        ) : (
+                          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>—</span>
+                        )}
+                      </td>
+                    )}
                     <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600, fontSize: 13 }}>
                       {item.value.toLocaleString()}
                     </td>
