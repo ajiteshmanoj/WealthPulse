@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { getPortfolio, runWhatIf } from '../services/api'
-import { Sliders, RotateCcw, TrendingUp, TrendingDown, Lightbulb } from 'lucide-react'
+import { getPortfolio, runWhatIf, getRebalancePlan } from '../services/api'
+import { Sliders, RotateCcw, TrendingUp, TrendingDown, Lightbulb, ClipboardList, ArrowRight, Info, Clock, Copy, Check, Loader2, ArrowDown, ArrowUp } from 'lucide-react'
 
 const ASSET_CLASSES = [
   { key: 'equities', label: 'Equities', color: '#3b82f6' },
@@ -24,6 +24,10 @@ function getScoreColor(score) {
   if (score >= 80) return 'var(--accent-green)'
   if (score >= 60) return 'var(--accent-yellow)'
   return 'var(--accent-red)'
+}
+
+function formatSGD(val) {
+  return `SGD ${val.toLocaleString()}`
 }
 
 function extractAllocations(portfolio) {
@@ -62,6 +66,10 @@ function extractAllocations(portfolio) {
 export default function WhatIfPage({ userId }) {
   const [allocations, setAllocations] = useState(null)
   const [currentAllocations, setCurrentAllocations] = useState(null)
+  const [rebalancePlan, setRebalancePlan] = useState(null)
+  const [planLoading, setPlanLoading] = useState(false)
+  const [planError, setPlanError] = useState(null)
+  const [copied, setCopied] = useState(false)
   const debounceRef = useRef(null)
 
   const { data: portfolio, isLoading } = useQuery({
@@ -84,6 +92,20 @@ export default function WhatIfPage({ userId }) {
     }
   }, [portfolio, currentAllocations])
 
+  // Clear plan when user switches profiles
+  useEffect(() => {
+    setCurrentAllocations(null)
+    setAllocations(null)
+    setRebalancePlan(null)
+    setPlanError(null)
+    mutation.reset()
+  }, [userId])
+
+  // Check if allocations differ from current
+  const hasChanges = allocations && currentAllocations && ASSET_CLASSES.some(
+    ac => Math.abs(allocations[ac.key] - currentAllocations[ac.key]) > 0.5
+  )
+
   // Debounced what-if call — use ref to avoid stale closure
   const mutationRef = useRef(mutation)
   mutationRef.current = mutation
@@ -98,6 +120,10 @@ export default function WhatIfPage({ userId }) {
   }, [userId])
 
   const handleSliderChange = (key, newValue) => {
+    // Clear plan when sliders move
+    setRebalancePlan(null)
+    setPlanError(null)
+
     setAllocations(prev => {
       const clamped = Math.max(0, Math.min(100, newValue))
       const remaining = 100 - clamped
@@ -133,8 +159,51 @@ export default function WhatIfPage({ userId }) {
   const handleReset = () => {
     if (currentAllocations) {
       setAllocations({ ...currentAllocations })
+      setRebalancePlan(null)
+      setPlanError(null)
       mutation.reset()
     }
+  }
+
+  const handleGeneratePlan = async () => {
+    if (!allocations || !hasChanges) return
+    setPlanLoading(true)
+    setPlanError(null)
+    setRebalancePlan(null)
+    try {
+      const result = await getRebalancePlan(userId, allocations)
+      setRebalancePlan(result)
+    } catch (err) {
+      setPlanError(err.response?.data?.detail || err.message || 'Failed to generate plan')
+    } finally {
+      setPlanLoading(false)
+    }
+  }
+
+  const handleCopyPlan = () => {
+    if (!rebalancePlan?.plan) return
+    const plan = rebalancePlan.plan
+    const userName = portfolio?.name || userId
+    let text = `WealthPulse Rebalancing Plan — ${userName}\n${'='.repeat(45)}\n\n`
+
+    for (const step of plan.steps) {
+      const actionLabel = step.action.toUpperCase()
+      text += `${actionLabel} ${step.asset_class}: ${formatSGD(step.amount_sgd)} (${step.current_pct}% → ${step.proposed_pct}%)\n`
+      for (const h of step.holdings_breakdown) {
+        text += `  - ${h.action === 'sell' ? 'Sell' : 'Buy'} ${h.name}: ${formatSGD(h.amount_sgd)}\n`
+      }
+      text += '\n'
+    }
+
+    text += `Summary: ${formatSGD(plan.summary.total_sells_sgd)} sells / ${formatSGD(plan.summary.total_buys_sgd)} buys\n`
+    text += `Est. Transaction Costs: ${formatSGD(plan.summary.estimated_costs_sgd)} (${plan.summary.cost_basis})\n`
+    text += `Wellness Score Impact: ${plan.summary.current_wellness_score} → ${plan.summary.proposed_wellness_score} (${plan.summary.wellness_delta > 0 ? '+' : ''}${plan.summary.wellness_delta} pts)\n\n`
+    text += `Timeline: ${plan.execution_notes.timeline}\n\n`
+    text += `Disclaimer: ${plan.disclaimer}\n`
+
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   if (isLoading) {
@@ -162,6 +231,7 @@ export default function WhatIfPage({ userId }) {
 
   const total = ASSET_CLASSES.reduce((sum, ac) => sum + allocations[ac.key], 0)
   const result = mutation.data
+  const plan = rebalancePlan?.plan
 
   return (
     <div className="animate-in">
@@ -472,6 +542,242 @@ export default function WhatIfPage({ userId }) {
           </p>
         </div>
       )}
+
+      {/* Generate Rebalancing Plan Button */}
+      <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'center' }}>
+        <button
+          className="btn btn-primary"
+          onClick={handleGeneratePlan}
+          disabled={!hasChanges || planLoading}
+          style={{
+            padding: '12px 28px', fontSize: 15, gap: 8,
+            opacity: !hasChanges ? 0.4 : 1,
+            cursor: !hasChanges ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {planLoading ? (
+            <>
+              <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
+              Generating Plan...
+            </>
+          ) : (
+            <>
+              <ClipboardList size={18} />
+              Generate Rebalancing Plan
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Plan Error */}
+      {planError && (
+        <div className="card" style={{ marginBottom: 24, borderColor: 'rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)' }}>
+          <p style={{ fontSize: 13, color: 'var(--accent-red)' }}>{planError}</p>
+        </div>
+      )}
+
+      {/* Rebalancing Plan */}
+      {plan && (
+        <div className="animate-in">
+          {/* Summary Stats */}
+          <div className="card" style={{ marginBottom: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <h3 style={{ fontSize: 16, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <ClipboardList size={18} color="var(--accent-blue)" />
+                Rebalancing Plan
+              </h3>
+              <button
+                className="btn btn-outline"
+                onClick={handleCopyPlan}
+                style={{ fontSize: 12, padding: '7px 14px', gap: 6 }}
+              >
+                {copied ? <><Check size={14} /> Copied!</> : <><Copy size={14} /> Copy Plan</>}
+              </button>
+            </div>
+
+            <div className="grid-4" style={{ gap: 12 }}>
+              <div className="stat-card">
+                <div className="stat-label">Total Sells</div>
+                <div className="stat-value" style={{ color: 'var(--accent-red)', fontSize: 18 }}>
+                  {formatSGD(plan.summary.total_sells_sgd)}
+                </div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Total Buys</div>
+                <div className="stat-value" style={{ color: 'var(--accent-green)', fontSize: 18 }}>
+                  {formatSGD(plan.summary.total_buys_sgd)}
+                </div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Est. Costs</div>
+                <div className="stat-value" style={{ color: 'var(--accent-yellow)', fontSize: 18 }}>
+                  {formatSGD(plan.summary.estimated_costs_sgd)}
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>({plan.summary.cost_basis})</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Wellness Impact</div>
+                <div className="stat-value" style={{
+                  color: plan.summary.wellness_delta >= 0 ? 'var(--accent-green)' : 'var(--accent-red)',
+                  fontSize: 18,
+                }}>
+                  {plan.summary.wellness_delta > 0 ? '+' : ''}{plan.summary.wellness_delta} pts
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>
+                  {plan.summary.current_wellness_score} → {plan.summary.proposed_wellness_score}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Steps */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
+            {plan.steps.map((step, idx) => {
+              const isSell = step.action === 'sell'
+              const prevStep = idx > 0 ? plan.steps[idx - 1] : null
+              const showDivider = prevStep && prevStep.action === 'sell' && step.action === 'buy'
+
+              return (
+                <div key={idx}>
+                  {showDivider && (
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: 12, margin: '8px 0 20px',
+                      color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em',
+                    }}>
+                      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                      <span>Buy Orders</span>
+                      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                    </div>
+                  )}
+                  {idx === 0 && isSell && (
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12,
+                      color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em',
+                    }}>
+                      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                      <span>Sell Orders</span>
+                      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                    </div>
+                  )}
+                  {idx === 0 && !isSell && (
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12,
+                      color: 'var(--text-muted)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em',
+                    }}>
+                      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                      <span>Buy Orders</span>
+                      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                    </div>
+                  )}
+
+                  <div className="card" style={{
+                    padding: 16,
+                    borderColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+                  }}>
+                    {/* Step Header */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span className={`badge ${isSell ? 'badge-red' : 'badge-green'}`} style={{
+                          fontSize: 11, fontWeight: 700, padding: '3px 10px', textTransform: 'uppercase',
+                        }}>
+                          {isSell ? <ArrowDown size={11} style={{ marginRight: 4 }} /> : <ArrowUp size={11} style={{ marginRight: 4 }} />}
+                          {step.action}
+                        </span>
+                        <span style={{ fontSize: 14, fontWeight: 600 }}>{step.asset_class}</span>
+                        <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+                          {step.current_pct}% → {step.proposed_pct}%
+                        </span>
+                      </div>
+                      <span style={{
+                        fontSize: 16, fontWeight: 700,
+                        color: isSell ? 'var(--accent-red)' : 'var(--accent-green)',
+                      }}>
+                        {formatSGD(step.amount_sgd)}
+                      </span>
+                    </div>
+
+                    {/* Holdings Breakdown */}
+                    <div style={{
+                      background: 'var(--bg-secondary)', borderRadius: 8, overflow: 'hidden',
+                      border: '1px solid var(--border)',
+                    }}>
+                      {step.holdings_breakdown.map((holding, hIdx) => (
+                        <div key={hIdx} style={{
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          padding: '10px 14px',
+                          borderBottom: hIdx < step.holdings_breakdown.length - 1 ? '1px solid var(--border)' : 'none',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <span style={{
+                              width: 6, height: 6, borderRadius: '50%',
+                              background: isSell ? 'var(--accent-red)' : 'var(--accent-green)',
+                              flexShrink: 0,
+                            }} />
+                            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{holding.name}</span>
+                          </div>
+                          <span style={{
+                            fontSize: 13, fontWeight: 600,
+                            color: isSell ? 'var(--accent-red)' : 'var(--accent-green)',
+                          }}>
+                            {formatSGD(holding.amount_sgd)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Execution Notes */}
+          <div className="card" style={{
+            marginBottom: 20, background: 'rgba(59, 130, 246, 0.06)',
+            borderColor: 'rgba(59, 130, 246, 0.15)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+              <Clock size={16} color="var(--accent-blue)" />
+              <h4 style={{ fontSize: 14, fontWeight: 600 }}>Execution Notes</h4>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <span style={{ fontWeight: 600, color: 'var(--text-primary)', minWidth: 70, flexShrink: 0 }}>Timeline:</span>
+                <span>{plan.execution_notes.timeline}</span>
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <span style={{ fontWeight: 600, color: 'var(--text-primary)', minWidth: 70, flexShrink: 0 }}>Priority:</span>
+                <span>{plan.execution_notes.priority_order}</span>
+              </div>
+              {plan.execution_notes.considerations.length > 0 && (
+                <div>
+                  <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Considerations:</span>
+                  <ul style={{ margin: '6px 0 0 16px', padding: 0 }}>
+                    {plan.execution_notes.considerations.map((c, i) => (
+                      <li key={i} style={{ marginBottom: 4 }}>{c}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Disclaimer */}
+          <div style={{
+            fontSize: 11, color: 'rgba(255,255,255,0.4)', fontStyle: 'italic',
+            lineHeight: 1.6, marginBottom: 24, padding: '0 4px',
+          }}>
+            {plan.disclaimer}
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   )
 }

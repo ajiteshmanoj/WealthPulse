@@ -31,35 +31,6 @@ function App() {
         </div>
 
         <div className="sidebar-section">
-          <div className="sidebar-section-title">Investor View</div>
-          <NavLink to="/dashboard" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
-            <Activity size={18} /> Dashboard
-          </NavLink>
-          <NavLink to="/goals" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
-            <Target size={18} /> Goal Planner
-          </NavLink>
-          <NavLink to="/scenarios" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
-            <Zap size={18} /> Scenario Lab
-          </NavLink>
-          <NavLink to="/news" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
-            <Newspaper size={18} /> Market Pulse
-          </NavLink>
-          <NavLink to="/whatif" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
-            <SlidersHorizontal size={18} /> What-If Editor
-          </NavLink>
-          <NavLink to="/tax" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
-            <Receipt size={18} /> Tax Optimization
-          </NavLink>
-        </div>
-
-        <div className="sidebar-section">
-          <div className="sidebar-section-title">Adviser View</div>
-          <NavLink to="/clients" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
-            <Users size={18} /> Client Book
-          </NavLink>
-        </div>
-
-        <div className="sidebar-section" style={{ marginTop: 'auto' }}>
           <div className="sidebar-section-title">Investor Profile</div>
           {USERS.map(u => (
             <button
@@ -81,6 +52,35 @@ function App() {
               </div>
             </button>
           ))}
+        </div>
+
+        <div className="sidebar-section">
+          <div className="sidebar-section-title">Investor View</div>
+          <NavLink to="/dashboard" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <Activity size={18} /> Dashboard
+          </NavLink>
+          <NavLink to="/goals" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <Target size={18} /> Goal Planner
+          </NavLink>
+          <NavLink to="/scenarios" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <Zap size={18} /> Scenario Lab
+          </NavLink>
+          <NavLink to="/news" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <Newspaper size={18} /> Market Pulse
+          </NavLink>
+          <NavLink to="/whatif" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <SlidersHorizontal size={18} /> What-If Editor
+          </NavLink>
+          <NavLink to="/tax" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <Receipt size={18} /> Tax Optimization
+          </NavLink>
+        </div>
+
+        <div className="sidebar-section" style={{ marginTop: 'auto' }}>
+          <div className="sidebar-section-title">Adviser View</div>
+          <NavLink to="/clients" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+            <Users size={18} /> Client Book
+          </NavLink>
         </div>
 
         <div style={{ padding: '16px 12px', borderTop: '1px solid var(--border)', marginTop: 16 }}>
