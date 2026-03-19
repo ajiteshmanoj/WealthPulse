@@ -662,8 +662,9 @@ WealthPulse/
 │   │       │   ├── PortfolioSummary.jsx # Interactive donut chart + legend
 │   │       │   ├── HoldingsTable.jsx    # Filterable multi-class holdings table
 │   │       │   └── WealthChart.jsx      # 12-month area chart
-│   │       └── AI/
-│   │           └── Recommendations.jsx  # 3 priority-tagged AI recommendation cards
+│   │       ├── AI/
+│   │       │   └── Recommendations.jsx  # 3 priority-tagged AI recommendation cards
+│   │       └── SchrodersAlignment.jsx   # 4-card Schroders strategy alignment panel
 │   ├── index.html
 │   ├── vite.config.js
 │   └── package.json
