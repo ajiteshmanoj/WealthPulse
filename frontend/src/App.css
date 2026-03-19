@@ -238,6 +238,36 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
+/* Schroders Alignment */
+.schroders-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.schroders-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid #00A0AF;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+@media (max-width: 1024px) {
+  .schroders-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .schroders-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar { display: none; }

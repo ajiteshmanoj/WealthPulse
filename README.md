@@ -97,6 +97,11 @@ The main dashboard provides a complete wealth overview at a glance.
 - When no key: falls back to realistic, profile-specific hardcoded recommendations
 - Shows "Live AI" badge when using real Claude responses
 
+**Schroders Strategy Alignment:**
+- 4 compact cards mapping WealthPulse capabilities to Schroders' active digital asset initiatives
+- Highlights alignment with MAS Project Guardian, Project BLOOM, tokenised securities, and AI-powered advisory
+- Demonstrates understanding of Schroders' Composable Finance vision
+
 **Holdings Detail Table:**
 - Tabbed filter: All / Equities / Bonds / Cash / Crypto / Private / Tokenised
 - **30-day Sparkline Trends** — Mini inline line charts per holding showing recent price movement (green for up, red for down)
