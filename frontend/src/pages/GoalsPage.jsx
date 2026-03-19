@@ -467,6 +467,8 @@ export default function GoalsPage({ userId }) {
                       <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#64748b' }} />
                       <YAxis tick={{ fontSize: 11, fill: '#64748b' }} tickFormatter={(v) => `$${v}`} width={60} />
                       <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 10, fontSize: 13 }}
+                        labelStyle={{ color: 'var(--text-primary)' }}
+                        itemStyle={{ color: 'var(--text-primary)' }}
                         formatter={(val) => [`SGD ${val.toLocaleString()}`, 'Amount']} />
                       <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
                         {Object.keys(exp.expense_breakdown).map((_, i) => (

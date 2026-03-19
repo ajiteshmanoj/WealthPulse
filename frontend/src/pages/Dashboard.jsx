@@ -8,7 +8,6 @@ import PortfolioSummary from '../components/Portfolio/PortfolioSummary'
 import HoldingsTable from '../components/Portfolio/HoldingsTable'
 import WealthChart from '../components/Portfolio/WealthChart'
 import Recommendations from '../components/AI/Recommendations'
-import SchrodersAlignment from '../components/SchrodersAlignment'
 import { TrendingUp, TrendingDown, DollarSign, Activity, BarChart3, HelpCircle, ChevronDown, ChevronUp, Info, X } from 'lucide-react'
 import { useState } from 'react'
 
@@ -203,8 +202,6 @@ export default function Dashboard({ userId }) {
         <Recommendations userId={userId} />
       </div>
 
-      {/* Schroders Strategy Alignment */}
-      <SchrodersAlignment />
 
       {/* Holdings table */}
       <div className="card">
