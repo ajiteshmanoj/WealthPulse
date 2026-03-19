@@ -715,19 +715,25 @@ WealthPulse/
 ### Competitive Differentiation
 
 | Feature | WealthPulse | Endowus | StashAway | Syfe |
-|---------|-------------|---------|-----------|------|
-| Multi-dimensional Wellness Score | Yes (5 sub-scores) | No | No | No |
-| Traditional + Crypto + Tokenised assets | Yes (6 classes) | Traditional only | Traditional only | Traditional + crypto |
-| Behavioral Resilience scoring | Yes | No | No | No |
-| Digital Readiness scoring | Yes | No | No | No |
-| Historical crisis stress testing | Yes (6 real crises) | No | No | No |
-| AI-powered recommendations (Claude) | Yes | No | Basic | No |
-| Adviser multi-client dashboard | Yes | No | No | No |
-| Live news with AI sentiment | Yes | No | No | No |
-| Singapore tax optimization (SRS/CPF/WHT) | Yes | No | No | No |
-| What-if allocation editor with live scoring | Yes | No | No | No |
+|---------|------------|---------|-----------|------|
+| **Core Focus** | Wellness analytics & advisory intelligence | Fund access & CPF/SRS investing | Automated portfolio management | Diversified portfolio & income products |
+| MAS Licensed / Regulated | No (analytics layer) | Yes (CMS License 101051) | Yes | Yes |
+| Real Money Management | No (prototype) | Yes (S$95M+ raised, live AUM) | Yes (live AUM) | Yes (live AUM) |
+| CPF/SRS Investing | No | Yes (first digital advisor for CPF) | SRS only | SRS only |
+| Multi-dimensional Wellness Score | **Yes (5 sub-scores)** | No | No | No |
+| Traditional + Crypto + Tokenised Assets | **Yes (6 classes)** | Traditional only | Traditional + crypto ETFs | Traditional + REITs |
+| Behavioral Resilience Scoring | **Yes** | No | No | No |
+| Digital Readiness Scoring | **Yes** | No | No | No |
+| Historical Crisis Stress Testing | **Yes (6 real crises)** | No | No | No |
+| AI-Powered Recommendations | **Yes (Claude API)** | No | No | No |
+| Adviser Multi-Client Dashboard | **Yes (8 clients)** | No | No | No |
+| AI-Generated Client Reports | **Yes** | No | No | No |
+| Rebalancing Execution Plans | **Yes** | No | Auto-rebalance (ERAA) | Risk Shield auto-adjust |
+| Live News with AI Sentiment | **Yes** | No | No | No |
+| Singapore Tax Optimization | **Yes (SRS/CPF/WHT/IRAS)** | No | No | No |
+| What-If Allocation Editor | **Yes (live scoring)** | No | No | No |
 
-**WealthPulse is the only platform that unifies traditional, private, and tokenised assets under a single multi-dimensional Wellness Score that includes behavioral resilience and digital readiness — dimensions no existing robo-adviser measures.**
+**Positioning:** WealthPulse does not compete with Endowus, StashAway, or Syfe on trade execution or fund custody — they are MAS-licensed platforms managing real money with proven track records. Instead, WealthPulse operates as the **analytics and intelligence layer** that sits *on top of* existing wealth infrastructure. An adviser using Endowus for fund execution could use WealthPulse to assess client wellness, generate reports, and run stress tests. WealthPulse is complementary to these platforms, not a replacement.
 
 ---
 
