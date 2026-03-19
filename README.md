@@ -4,7 +4,7 @@
 
 WealthPulse is a next-generation wealth wellness platform that redefines how investors and wealth advisers understand financial health. Instead of just tracking portfolio returns, WealthPulse introduces a proprietary **Wealth Wellness Score** — a holistic, multi-dimensional health metric that evaluates diversification, liquidity, behavioral resilience, goal alignment, and digital readiness across traditional and emerging asset classes including crypto and tokenised real-world assets.
 
-Built for Singapore-based investors and wealth managers, the platform combines real-time portfolio analytics with **AI-powered recommendations from Claude (Anthropic)**, interactive goal projections, historical crisis simulations, live financial news with AI sentiment analysis, Singapore-specific tax optimization, a what-if portfolio editor, and an intelligent adviser dashboard.
+Built for Singapore-based investors and wealth managers, the platform combines real-time portfolio analytics with **AI-powered recommendations from Claude (Anthropic)**, interactive goal projections, historical crisis simulations, live financial news with AI sentiment analysis, Singapore-specific tax optimization, a what-if portfolio editor with rebalancing plan generation, AI-generated client reports, and an intelligent adviser dashboard.
 
 ---
 
@@ -33,14 +33,15 @@ The app has two perspectives accessible from the sidebar:
 2. Click **Client Book** in the sidebar → see all 8 clients ranked by wellness score
 3. Each client card shows: wellness score, AUM, allocation bars, goal status, and risk flags
 4. Clients at risk (score < 50) are sorted first for priority attention
+5. Click **Generate Report** on any client → AI produces a personalised adviser email with findings and recommendations
 
 ### Investor Flow
 1. Select an investor profile from the bottom of the sidebar (Alex Tan / Sarah Lim / David Chen)
-2. **Dashboard** — See total wealth, wellness score ring (click to view methodology modal), performance stats, wealth history chart, score breakdown, asset allocation pie chart, AI recommendations, and full holdings table
+2. **Dashboard** — See total wealth, wellness score ring (click to view methodology modal), performance stats, wealth history chart, score breakdown, asset allocation pie chart, AI recommendations, and full holdings table with 30-day sparkline trends
 3. **Goal Planner** — View goal progress, adjust timeline with interactive slider, visualize projected growth and portfolio strategy outcomes in real time
 4. **Scenario Lab** — Stress-test the portfolio against custom macro events or 6 real historical financial crises (2008 GFC, COVID-19, Dot-Com, etc.)
 5. **Market Pulse** — Browse live financial news from Yahoo Finance, CNBC, MarketWatch, Reuters, and more, with AI-powered sentiment analysis
-6. **What-If Editor** — Drag allocation sliders to explore how rebalancing affects your Wellness Score in real time
+6. **What-If Editor** — Drag allocation sliders to explore how rebalancing affects your Wellness Score in real time, then generate a full rebalancing execution plan
 7. **Tax Optimization** — View SRS tax relief, CPF top-up savings, dividend withholding tax analysis, and IRAS trading income risk assessment
 
 ---
@@ -98,9 +99,11 @@ The main dashboard provides a complete wealth overview at a glance.
 
 **Holdings Detail Table:**
 - Tabbed filter: All / Equities / Bonds / Cash / Crypto / Private / Tokenised
+- **30-day Sparkline Trends** — Mini inline line charts per holding showing recent price movement (green for up, red for down)
+- Fixed column layout with consistent widths across asset classes
 - Per-holding columns adapt by asset class:
-  - Equities & Crypto: ticker badge, name, value, allocation %, daily change %
-  - Bonds: name, value, allocation %, yield %
+  - Equities & Crypto: ticker badge, name, 30D trend sparkline, value, allocation %, daily change %
+  - Bonds: name, 30D trend sparkline, value, allocation %, yield %
   - Cash: name, value, allocation %
   - Private Assets: name, value, allocation %, liquidity badge (low/medium)
   - Tokenised Assets: name, value, allocation %, type badge (bond/property/commodity)
@@ -260,6 +263,17 @@ Each client card displays in a single row:
 - **Goal status** — Goal name with on-track (green check) or off-track (red warning) badge
 - **Risk flags** — Orange warning items (e.g., "Crypto over 40%", "85% in single stock", "No emergency fund")
 
+**AI-Generated Client Reports:**
+- "Generate Report" button per client card
+- Claude AI produces a personalised adviser email including:
+  - Subject line and greeting
+  - Portfolio wellness summary (2-3 sentences)
+  - 3 key findings (specific risk flags, allocation issues, goal misalignment)
+  - 3 actionable recommendations (with specific SGD amounts and percentages)
+  - Closing with call-to-action for follow-up meeting
+- Copy-to-clipboard button for easy export to email
+- "Live AI" badge when using real Claude responses; realistic fallback reports when no API key is set
+
 **8 Clients with Diverse Profiles:**
 
 | Client        | Age | Score | AUM     | Risk Profile  | Key Issue                    |
@@ -294,6 +308,13 @@ Explore how rebalancing your portfolio affects your Wellness Score — in real t
 **Allocation Comparison:**
 - Stacked horizontal bars comparing current vs proposed allocation visually
 - Color-coded segments per asset class with percentage labels
+
+**Rebalancing Plan Generation:**
+- "Generate Rebalancing Plan" button produces a full execution plan
+- **Sell steps:** Which asset classes/holdings to reduce, with SGD amounts and per-security breakdown
+- **Buy steps:** Which asset classes/holdings to increase, with suggested instruments (e.g., STI ETF, SPY, Singapore Savings Bonds)
+- **Summary:** Total sells, total buys, estimated transaction costs (0.5% of trade volume), wellness score delta
+- **Execution notes:** Recommended 2-3 day timeline, priority order (sell first, then buy), and asset-class-specific considerations (crypto withdrawal fees, bond T+2 settlement, SGX trading hours, private asset lock-ups, tokenised asset wallet requirements)
 
 **Debounced API Calls:**
 - Backend recalculates scores using the same wellness engine as the main dashboard
@@ -552,6 +573,7 @@ Base URL: `http://localhost:8000`
 | Method | Endpoint            | Description                           |
 |--------|---------------------|---------------------------------------|
 | POST   | `/api/ai/recommend` | Returns 3 AI-powered recommendations. Uses Claude API if key present, else profile-specific hardcoded data. Body: `{ user_id }` |
+| POST   | `/api/ai/client-report` | Generates an AI-powered adviser email report for a specific client. Includes wellness summary, key findings, and actionable recommendations. Uses Claude API with fallback. Body: `{ client_name }` |
 
 ### Clients
 
@@ -572,6 +594,7 @@ Base URL: `http://localhost:8000`
 | Method | Endpoint      | Description                           |
 |--------|---------------|---------------------------------------|
 | POST   | `/api/whatif`  | Simulates allocation changes and returns current vs proposed wellness scores. Body: `{ user_id, allocations: { equities: 35, bonds: 15, ... } }`. Allocations must sum to 100. Uses the same wellness scoring engine as `/api/wellness`. |
+| POST   | `/api/whatif/rebalance-plan` | Generates a step-by-step rebalancing execution plan with sell/buy steps, per-holding breakdown, estimated transaction costs, and execution notes. Body: `{ user_id, allocations: { ... } }` |
 
 ### Tax Optimization
 
@@ -599,9 +622,9 @@ WealthPulse/
 │   │   ├── wellness.py          # GET /api/wellness/{id} — scoring engine (5 sub-scores)
 │   │   ├── news.py              # GET /api/news — live RSS feeds + Claude sentiment analysis
 │   │   ├── scenarios.py         # POST /api/scenario — 4 custom + 6 historical crises
-│   │   ├── ai.py                # POST /api/ai/recommend — Claude API + fallback
+│   │   ├── ai.py                # POST /api/ai/recommend + /api/ai/client-report — Claude API + fallback
 │   │   ├── goals.py             # Goal calculator, projections, expense analyzer
-│   │   ├── whatif.py            # POST /api/whatif — allocation editor with live score recalculation
+│   │   ├── whatif.py            # POST /api/whatif + /api/whatif/rebalance-plan — allocation editor with live score recalculation and execution planning
 │   │   └── tax.py               # GET /api/tax/{id} — SG tax optimization (SRS, CPF, WHT, IRAS risk)
 │   ├── mock_data/
 │   │   ├── portfolios.json      # 3 investor profiles (Alex, Sarah, David)
