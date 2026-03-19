@@ -32,7 +32,6 @@ function Sparkline({ data, width = 80, height = 28 }) {
   const isUp = data[data.length - 1] >= data[0]
   const color = isUp ? '#10b981' : '#ef4444'
 
-  // Create fill area
   const fillPoints = `0,${height} ${points} ${width},${height}`
 
   return (
@@ -59,6 +58,9 @@ function Sparkline({ data, width = 80, height = 28 }) {
   )
 }
 
+// Column widths: Name(flex) | Trend(100px) | Value(130px) | Allocation(100px) | Last col(120px)
+const COL_WIDTHS = { trend: 100, value: 130, allocation: 100, last: 120 }
+
 export default function HoldingsTable({ holdings, activeClass = 'all' }) {
   if (!holdings) return null
 
@@ -72,6 +74,14 @@ export default function HoldingsTable({ holdings, activeClass = 'all' }) {
         const items = holdings[cls]
         if (!items || items.length === 0) return null
         const hasTrend = items.some(item => item.trend && item.trend.length > 1)
+        const hasLastCol = cls === 'equities' || cls === 'crypto' || cls === 'bonds' || cls === 'private_assets' || cls === 'tokenised_assets'
+
+        const lastColLabel = (cls === 'equities' || cls === 'crypto') ? 'Day Change'
+          : cls === 'bonds' ? 'Yield'
+          : cls === 'private_assets' ? 'Liquidity'
+          : cls === 'tokenised_assets' ? 'Type'
+          : null
+
         return (
           <div key={cls} style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -79,25 +89,21 @@ export default function HoldingsTable({ holdings, activeClass = 'all' }) {
               <h4 style={{ fontSize: 14, fontWeight: 600 }}>{LABELS[cls]}</h4>
               <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>({items.length} holdings)</span>
             </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+              <colgroup>
+                <col />
+                {hasTrend && <col style={{ width: COL_WIDTHS.trend }} />}
+                <col style={{ width: COL_WIDTHS.value }} />
+                <col style={{ width: COL_WIDTHS.allocation }} />
+                {hasLastCol && <col style={{ width: COL_WIDTHS.last }} />}
+              </colgroup>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border)' }}>
                   <th style={thStyle}>Name</th>
                   {hasTrend && <th style={{ ...thStyle, textAlign: 'center' }}>30D Trend</th>}
                   <th style={{ ...thStyle, textAlign: 'right' }}>Value (SGD)</th>
                   <th style={{ ...thStyle, textAlign: 'right' }}>Allocation</th>
-                  {cls === 'equities' || cls === 'crypto' ? (
-                    <th style={{ ...thStyle, textAlign: 'right' }}>Day Change</th>
-                  ) : null}
-                  {cls === 'bonds' ? (
-                    <th style={{ ...thStyle, textAlign: 'right' }}>Yield</th>
-                  ) : null}
-                  {cls === 'private_assets' ? (
-                    <th style={{ ...thStyle, textAlign: 'right' }}>Liquidity</th>
-                  ) : null}
-                  {cls === 'tokenised_assets' ? (
-                    <th style={{ ...thStyle, textAlign: 'right' }}>Type</th>
-                  ) : null}
+                  {hasLastCol && <th style={{ ...thStyle, textAlign: 'right' }}>{lastColLabel}</th>}
                 </tr>
               </thead>
               <tbody>
@@ -109,12 +115,12 @@ export default function HoldingsTable({ holdings, activeClass = 'all' }) {
                           <span style={{
                             fontSize: 11, fontWeight: 700, color: COLORS[cls],
                             background: `${COLORS[cls]}15`, padding: '2px 6px',
-                            borderRadius: 4
+                            borderRadius: 4, flexShrink: 0,
                           }}>
                             {item.ticker}
                           </span>
                         )}
-                        <span style={{ fontSize: 13 }}>{item.name}</span>
+                        <span style={{ fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</span>
                       </div>
                     </td>
                     {hasTrend && (
