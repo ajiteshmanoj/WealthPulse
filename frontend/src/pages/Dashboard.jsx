@@ -273,7 +273,7 @@ export default function Dashboard({ userId }) {
             {[
               {
                 name: 'Diversification', weight: '25%', color: '#3b82f6', key: 'diversification',
-                how: 'Measures concentration risk. Penalizes if any single holding exceeds 30% of total wealth, or if any one asset class exceeds 60%.',
+                how: 'Uses the Herfindahl-Hirschman Index (HHI) — a recognized financial concentration metric. HHI is computed at both holding-level and asset-class-level, blended 60/40, then normalized to a 0-100 score. Additional penalties apply for single-holding concentration (>30%) and single asset class dominance (>60%). Lower HHI = better diversification.',
               },
               {
                 name: 'Liquidity', weight: '20%', color: '#10b981', key: 'liquidity',

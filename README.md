@@ -75,7 +75,7 @@ The main dashboard provides a complete wealth overview at a glance.
 - Each bar shows: icon, label, weight percentage, numeric score, and color
 - Below each bar: a contextual insight sentence explaining what the score means
 - Sub-scores:
-  - **Diversification (25%)** — Evaluates single-asset concentration and asset class balance
+  - **Diversification (25%)** — Uses the Herfindahl-Hirschman Index (HHI) to evaluate concentration at holding and asset-class levels
   - **Liquidity (20%)** — Measures cash buffer adequacy and illiquid asset exposure
   - **Behavioral Resilience (20%)** — Assesses portfolio volatility and crypto concentration risk
   - **Goal Alignment (20%)** — Checks return gaps, contribution adequacy, and time horizon fit
@@ -500,11 +500,16 @@ Overall = Diversification × 0.25 + Liquidity × 0.20 + Behavioral Resilience ×
 ### Sub-Score Calculations
 
 **Diversification (25% weight):**
-- Start at 100
-- If any single holding > 30% of portfolio: -20 per 10% over threshold
-- If any single asset class > 60%: -15
-- If any single country > 70%: -10
-- Floor: 0, Ceiling: 100
+
+* Uses the **Herfindahl-Hirschman Index (HHI)** — a recognized financial concentration metric
+* HHI computed at two levels:
+  + **Holding-level** (60% weight) — concentration across individual securities
+  + **Asset-class-level** (40% weight) — concentration across 6 asset classes
+* HHI normalized to 0-100 score (lower HHI = better diversification)
+* Additional penalties:
+  + If any single holding > 30% of portfolio: -20 per 10% over threshold
+  + If any single asset class > 60%: -15
+* Floor: 0, Ceiling: 100
 
 **Liquidity (20% weight):**
 - Cash ratio = cash / total wealth

@@ -112,7 +112,8 @@ def _estimate_vol(allocations):
 
 
 def _compute_scores(holdings, total_wealth, portfolio_vol_pct, goal_alignment_score):
-    div = calc_diversification(holdings, total_wealth)
+    div_result = calc_diversification(holdings, total_wealth)
+    div = div_result["score"]
     liq = calc_liquidity(holdings, total_wealth)
     beh = calc_behavioral_resilience(portfolio_vol_pct, holdings, total_wealth)
     goal = goal_alignment_score  # fixed — allocation changes don't affect goal alignment

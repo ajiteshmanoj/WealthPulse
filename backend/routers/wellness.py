@@ -18,30 +18,76 @@ def load_goals():
 
 
 def calc_diversification(holdings, total_wealth):
-    score = 100
+    """
+    Diversification score using HHI (Herfindahl-Hirschman Index) as the foundation,
+    enhanced with multi-level concentration penalties.
+
+    HHI ranges:
+    - 10,000 = fully concentrated (one asset)
+    - ~1,667 = perfectly spread across 6 asset classes
+    - Lower HHI = better diversification
+
+    We compute HHI at two levels and blend them, then apply threshold penalties.
+    """
+    if total_wealth <= 0:
+        return {"score": 0, "blended_hhi": 10000, "n_classes": 0, "n_holdings": 0}
+
+    # Collect all individual holding values and class totals
     all_values = []
-    class_values = {}
+    class_totals = {}
     for asset_class, items in holdings.items():
         class_total = sum(item["value"] for item in items)
-        class_values[asset_class] = class_total
+        if class_total > 0:
+            class_totals[asset_class] = class_total
         for item in items:
-            all_values.append(item["value"])
+            if item["value"] > 0:
+                all_values.append(item["value"])
 
-    # Top single asset > 30%
-    if all_values:
-        max_single_pct = max(all_values) / total_wealth * 100
-        if max_single_pct > 30:
-            over = max_single_pct - 30
-            score -= (over / 10) * 20
+    n_holdings = len(all_values)
+    n_classes = len(class_totals)
 
-    # >60% in one asset class
-    for cls, val in class_values.items():
-        if val / total_wealth * 100 > 60:
-            score -= 15
+    if n_holdings == 0:
+        return {"score": 0, "blended_hhi": 10000, "n_classes": 0, "n_holdings": 0}
 
-    # >70% in one country (simplified — assume Singapore-heavy)
-    # For mock purposes, skip country check or apply mild penalty
-    return max(0, min(100, score))
+    # --- Level 1: Holding-level HHI ---
+    holding_pcts = [(v / total_wealth) * 100 for v in all_values]
+    holding_hhi = sum(p ** 2 for p in holding_pcts)
+
+    # --- Level 2: Asset-class-level HHI ---
+    class_pcts = [(v / total_wealth) * 100 for v in class_totals.values()]
+    class_hhi = sum(p ** 2 for p in class_pcts)
+
+    # --- Blend: 60% holding-level, 40% asset-class-level ---
+    # If there's only one holding per class (e.g. What-If simulated), both levels are equivalent
+    blended_hhi = (holding_hhi * 0.6) + (class_hhi * 0.4)
+
+    # --- Normalize HHI to 0-100 score ---
+    # HHI 1000 or below = score 100, HHI 5000+ = score 0
+    hhi_score = max(0, min(100, ((5000 - blended_hhi) / 4000) * 100))
+
+    # --- Apply threshold penalties (existing logic as modifiers) ---
+    penalties = 0
+
+    # Single holding concentration penalty
+    for v in all_values:
+        pct = (v / total_wealth) * 100
+        if pct > 30:
+            excess = (pct - 30) / 10
+            penalties += 20 * excess
+
+    # Single asset class dominance penalty
+    for pct in class_pcts:
+        if pct > 60:
+            penalties += 15
+
+    final_score = max(0, min(100, round(hhi_score - penalties, 1)))
+
+    return {
+        "score": final_score,
+        "blended_hhi": round(blended_hhi),
+        "n_classes": n_classes,
+        "n_holdings": n_holdings,
+    }
 
 
 def calc_liquidity(holdings, total_wealth):
@@ -151,6 +197,19 @@ def get_label(score):
         return "Critical — Immediate rebalancing required", "#ef4444"
 
 
+def get_diversification_insight(score, blended_hhi, n_classes, n_holdings):
+    """Generate HHI-aware insight text for diversification."""
+    hhi = round(blended_hhi)
+    if score >= 80:
+        return f"Excellent diversification (HHI: {hhi}). Well-spread across {n_classes} asset classes and {n_holdings} holdings."
+    elif score >= 60:
+        return f"Good diversification (HHI: {hhi}). Consider spreading further across underrepresented asset classes."
+    elif score >= 40:
+        return f"Fair diversification (HHI: {hhi}). Portfolio shows moderate concentration — consider rebalancing."
+    else:
+        return f"High concentration risk (HHI: {hhi}). Portfolio is heavily concentrated — diversification needed urgently."
+
+
 def get_insight(name, score):
     insights = {
         "diversification": {
@@ -223,7 +282,8 @@ async def get_wellness(user_id: str):
         h = p["holdings"]
         tw = p["total_wealth"]
 
-        div_score = calc_diversification(h, tw)
+        div_result = calc_diversification(h, tw)
+        div_score = div_result["score"]
         liq_score = calc_liquidity(h, tw)
         beh_score = calc_behavioral_resilience(p["portfolio_vol_pct"], h, tw)
         goal_score = calc_goal_alignment(user_id, h, tw, p["time_horizon"])
@@ -239,13 +299,22 @@ async def get_wellness(user_id: str):
         overall = round(overall)
         label, color = get_label(overall)
 
+        div_insight = get_diversification_insight(
+            div_score, div_result["blended_hhi"],
+            div_result["n_classes"], div_result["n_holdings"],
+        )
+
         return {
             "user_id": user_id,
             "overall_score": overall,
             "label": label,
             "color": color,
             "sub_scores": {
-                "diversification": {"score": round(div_score), "insight": get_insight("diversification", div_score)},
+                "diversification": {
+                    "score": round(div_score),
+                    "insight": div_insight,
+                    "hhi": div_result["blended_hhi"],
+                },
                 "liquidity": {"score": round(liq_score), "insight": get_insight("liquidity", liq_score)},
                 "behavioral_resilience": {"score": round(beh_score), "insight": get_insight("behavioral_resilience", beh_score)},
                 "goal_alignment": {"score": round(goal_score), "insight": get_insight("goal_alignment", goal_score)},
